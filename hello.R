@@ -13,9 +13,14 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
+library(gtools)
+
 
 n <- 3
 coalitions(n)
 
 v <- c(1,1,2,1,2,2,2)
 shap <- shapley(v)
+
+
+shapley(v, method = "appro", m = 100)
