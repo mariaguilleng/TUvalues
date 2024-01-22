@@ -13,7 +13,15 @@
 coalitions <- function(n_players){
 
   # create binary representation of the possible coalitions
-  binary_coalitions <- expand.grid(rep(list(c(0, 1)), n_players))
+  tryCatch(
+    expr = {
+      binary_coalitions <- expand.grid(rep(list(c(0, 1)), n_players))
+    },
+    error = function(e){
+      message(e)
+      stop("\nNumber of players is too big.")
+    }
+  )
   binary_coalitions <- binary_coalitions[order(rowSums(binary_coalitions)),]
   colnames(binary_coalitions) <- 1:n_players
 
