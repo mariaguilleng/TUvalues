@@ -2,6 +2,8 @@
 
 export(banzhaf)
 export(coalitions)
+export(egalitarian)
+export(equal_surplus_division)
 export(shapley)
 importFrom(utils,setTxtProgressBar)
 importFrom(utils,txtProgressBar)
