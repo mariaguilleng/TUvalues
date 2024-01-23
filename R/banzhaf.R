@@ -12,12 +12,14 @@
 #' iterations to perform in the approximated calculation
 #' @param n_players Only used if \code{value_func} is a \code{function}.
 #' The number of players in the game.
+#' @param replace should sampling be with replacement?
 #'
 #' @return The Banzhaf value for each player
 #'
 #' @export
 
-banzhaf <- function(value_func, method = "exact", n_rep = 10000, n_players = 0){
+banzhaf <- function(value_func, method = "exact", n_rep = 10000, n_players = 0,
+                    replace = FALSE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value
@@ -26,13 +28,13 @@ banzhaf <- function(value_func, method = "exact", n_rep = 10000, n_players = 0){
 
   if (method == "exact") {
     if (class(value_func) == "numeric") {
-      return("TO DO")
+      return(banzhaf_exact_vector(value_func))
     } else if (class(value_func) == "function") {
       if (n_players < 2) {
         stop("Invalid numer of player specified. n_players must be greater
              than 1.")
       }
-      return("TO DO")
+      return(banzhaf_exact_func(value_func, n_players))
     }
   } else {
     if (n_rep < 1) {
@@ -45,7 +47,7 @@ banzhaf <- function(value_func, method = "exact", n_rep = 10000, n_players = 0){
         stop("Invalid numer of player specified. n_players must be greater
              than 1.")
       }
-      return(banzhaf_appro_func(value_func,n_rep,n_players))
+      return(banzhaf_appro_func(value_func,n_rep,n_players,replace))
     }
   }
 

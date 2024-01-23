@@ -1,6 +1,6 @@
-#' @title Shapley value (approximation)
+#' @title Banzhaf Index (approximated)
 #'
-#' @description Calculate the approximated Shapley value based on sampling
+#' @description Calculate the approximated Banzhaf Index based on sampling
 #'
 #' @param value_func The valued function defined on the subsets of the number
 #' of players
@@ -13,7 +13,6 @@
 
 banzhaf_appro_vector <- function(value_func,n_rep){
 
-  browser()
   # get number of players
   n_players<-log(length(value_func),2)
 
@@ -43,10 +42,11 @@ banzhaf_appro_vector <- function(value_func,n_rep){
 
   for (rep in 1:n_rep) {
 
-    # Update the progress bar
-    setTxtProgressBar(pb, rep)
-
     for (i in 1:n_players) {
+
+      # Update the progress bar
+      setTxtProgressBar(pb, ((i-1)*n_rep)+rep)
+
       # S in all(S) with probability 1/2**n without repetition
       repeat{
         size_coalition <- sample(0:(n_players-1), size = 1, prob = prob_coalition)
@@ -71,6 +71,7 @@ banzhaf_appro_vector <- function(value_func,n_rep){
   }
   close(pb)
   banzhaf_value <- banzhaf_value/n_rep
+  names(banzhaf_value) <- 1:n_players
   return(banzhaf_value)
 
 }
@@ -89,66 +90,19 @@ banzhaf_appro_vector <- function(value_func,n_rep){
 #'
 #' @return The Shapley value for each player
 
-# banzhaf_appro_func <- function(value_func,n_rep,n_players){
-#
-#   # init progress bar
-#   pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
-#
-#   banzhaf_value <- rep(0, n_players)
-#
-#   used_coalitions <- list()
-#   prob_coalition <- c()
-#   for (i in 1:n_players) {
-#     prob_coalition[i] <- choose(n_players, i-1)
-#   }
-#
-#   n_rep <- min(n_rep, 2**n_players)
-#
-#   for (rep in 1:n_rep) {
-#
-#     # Update the progress bar
-#     setTxtProgressBar(pb, rep)
-#
-#     for (i in 1:n_players) {
-#       # S in all(S) with probability 1/2**n without repetition
-#       repeat{
-#         size_coalition <- sample(0:(n_players-1), size = 1, prob = prob_coalition)
-#         coalition <- sort(sample(setdiff(seq(1, n_players), i), size = size_coalition))
-#         if (!any(sapply(used_coalitions, identical, c(coalition,i)))) {
-#           break
-#         }
-#       }
-#       used_coalitions <- append(used_coalitions, list(c(coalition,i)))
-#       # v(S U {i})
-#       v_coalition_player <- value_func(c(coalition, i))
-#       # v(S)
-#       v_coalition_noplayer <- value_func(coalition)
-#       # x_i = v(S U {i}) - v(S)
-#       x_coalition_player <- v_coalition_player - v_coalition_noplayer
-#       # sh_i <- sh_i + x_i
-#       banzhaf_value[i] <- banzhaf_value[i] + x_coalition_player
-#
-#     }
-#   }
-#   close(pb)
-#   banzhaf_value <- banzhaf_value/n_rep
-#   return(banzhaf_value)
-#
-# }
+banzhaf_appro_func <- function(value_func,n_rep,n_players,replace = TRUE){
 
-banzhaf_appro_func <- function(value_func,n_rep,n_players){
+  banzhaf_value <- rep(0, n_players)
+  n_rep <- min(n_rep, 2**n_players)
 
   # init progress bar
   pb <- txtProgressBar(min = 0, max = n_rep*n_players, style = 3)
 
-  banzhaf_value <- rep(0, n_players)
-
+  # probability of the size of the coalitions
   prob_coalition <- c()
   for (i in 1:n_players) {
     prob_coalition[i] <- choose(n_players, i-1)
   }
-
-  n_rep <- min(n_rep, 2**n_players)
 
   for (i in 1:n_players) {
 
@@ -159,19 +113,22 @@ banzhaf_appro_func <- function(value_func,n_rep,n_players){
         # Update the progress bar
         setTxtProgressBar(pb, ((i-1)*n_rep)+rep)
 
-        # S in all(S) with probability 1/2**n without repetition
-        repeat{
+        # S in all(S) with probability 1/2**n WITHOUT repetition
+        if (!replace) {
+          repeat{
+            size_coalition <- sample(0:(n_players-1), size = 1, prob = prob_coalition)
+            coalition <- sort(sample(setdiff(seq(1, n_players), i), size = size_coalition))
+            if (!any(sapply(used_coalitions, identical, coalition))) {
+              break
+            }
+          }
+          used_coalitions <- append(used_coalitions, list(coalition))
+        # S in all(S) with probability 1/2**n WITH repetition
+        } else {
           size_coalition <- sample(0:(n_players-1), size = 1, prob = prob_coalition)
           coalition <- sort(sample(setdiff(seq(1, n_players), i), size = size_coalition))
-          if (!any(sapply(used_coalitions, identical, coalition))) {
-            break
-          }
         }
-        used_coalitions <- append(used_coalitions, list(coalition))
 
-        # S in all(S) with probability 1/2**n with repetition
-        # size_coalition <- sample(0:(n_players-1), size = 1, prob = prob_coalition)
-        # coalition <- sort(sample(setdiff(seq(1, n_players), i), size = size_coalition))
         # v(S U {i})
         v_coalition_player <- value_func(c(coalition, i))
         # v(S)
@@ -185,6 +142,7 @@ banzhaf_appro_func <- function(value_func,n_rep,n_players){
   }
   close(pb)
   banzhaf_value <- banzhaf_value/n_rep
+  names(banzhaf_value) <- 1:n_players
   return(banzhaf_value)
 
 }
