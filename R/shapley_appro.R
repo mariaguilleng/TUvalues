@@ -52,6 +52,7 @@ shapley_appro_vector <- function(value_func,n_rep){
   close(pb)
 
   shapley_value <- shapley_value/n_rep
+  names(shapley_value) <- 1:n_players
   return(shapley_value)
 
 }

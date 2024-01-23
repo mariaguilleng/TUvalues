@@ -27,7 +27,8 @@ shapley_exact_vector <- function(value_func){
   factorial_n <- factorial(n_players)
   for (j in 1:(2^n_players-1)){
     for (i in 1:n_players){
-      s_players<-length(which(coa_binary[j,]!=0)) # Number of players of the coalition
+      s <- coalition_binary_to_numeric(coa_binary[j,]) # Current coalition
+      s_players <- length(s) # Number of players of the coalition
       if (coa_aux[j,i]==0){
         coa_aux[j,i]=-(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*value_func[j]
       } else {
@@ -59,11 +60,12 @@ shapley_exact_func <- function(value_func, n_players){
   factorial_n <- factorial(n_players)
   for (j in 1:(2^n_players-1)){
     for (i in 1:n_players){
-      s_players<-length(which(coa_binary[j,]!=0)) # Number of players of the coalition
+      s <- coalition_binary_to_numeric(coa_binary[j,]) # Current coalition
+      s_players <- length(s) # Number of players of the coalition
       if (coa_aux[j,i]==0){
-        coa_aux[j,i]=-(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*value_func(coa_binary[j,])
+        coa_aux[j,i]=-(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*value_func(s)
       } else {
-        coa_aux[j,i]=(factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*value_func(coa_binary[j,])
+        coa_aux[j,i]=(factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*value_func(s)
       }
     }
   }

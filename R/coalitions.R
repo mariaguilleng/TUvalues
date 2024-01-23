@@ -24,15 +24,13 @@ coalitions <- function(n_players){
   )
   binary_coalitions <- binary_coalitions[order(rowSums(binary_coalitions)),]
   colnames(binary_coalitions) <- 1:n_players
+  rownames(binary_coalitions) <- 1:nrow(binary_coalitions)
 
   # create classical representation (as sets) of the possible coalitions
-  #classic_coalitions <- list()
   classic_coalitions <- c()
   for (i in 1:nrow(binary_coalitions)) {
     cols <- which(binary_coalitions[i, ] == 1)
-    #classic_coalitions[i] <- paste0("{", paste(cols, collapse = ","), "}")
     classic_coalitions[i] <- toString(cols)
-    #classic_coalitions <- append(classic_coalitions, list(cols))
   }
 
   # return both representations in a list
@@ -40,4 +38,8 @@ coalitions <- function(n_players){
   names(sol)<-c("Binary","Classic")
   return(sol)
 
+}
+
+coalition_binary_to_numeric <- function(coalition_binary) {
+  return(which(coalition_binary == 1))
 }
