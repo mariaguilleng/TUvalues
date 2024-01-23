@@ -4,7 +4,13 @@
 \alias{banzhaf}
 \title{Banzhaf value}
 \usage{
-banzhaf(value_func, method = "exact", n_rep = 10000, n_players = 0)
+banzhaf(
+  value_func,
+  method = "exact",
+  n_rep = 10000,
+  n_players = 0,
+  replace = FALSE
+)
 }
 \arguments{
 \item{value_func}{The valued function defined on the subsets of the number
@@ -19,6 +25,8 @@ iterations to perform in the approximated calculation}
 
 \item{n_players}{Only used if \code{value_func} is a \code{function}.
 The number of players in the game.}
+
+\item{replace}{should sampling be with replacement?}
 }
 \value{
 The Banzhaf value for each player
