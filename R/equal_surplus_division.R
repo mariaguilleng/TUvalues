@@ -14,7 +14,6 @@
 
 equal_surplus_division <- function(value_func, n_players = 0) {
 
-  browser()
   esd_value <- rep(0, n_players)
   if (class(value_func) == "numeric") {
 
