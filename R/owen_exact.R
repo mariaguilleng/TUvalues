@@ -1,4 +1,18 @@
+#' @title Owen value (exact)
+#'
+#' @description Calculate the exact Owen
+#'
+#' @param characteristic_func The valued function defined on the subsets of the number
+#' of players
+#' @param union List of vectors indicating the apriori unions between the
+#' players
+#' @param n_players The number of players
+#'
 #' @importFrom gtools permutations
+#'
+#' @return The Owen value for each player
+
+
 owen_exact <- function(characteristic_func, union, n_players = NULL) {
 
   if (is.vector(characteristic_func)) {
@@ -9,6 +23,7 @@ owen_exact <- function(characteristic_func, union, n_players = NULL) {
       n_players <- log2(length(characteristic_func))
     }
   }
+  coa_set <- coalitions(n_players)[[2]]
 
   # get valid permutations according to a apriori unions
   n_perm_union <- factorial(length(union)) * prod(sapply(union, function(x) factorial(length(x))))
@@ -36,7 +51,7 @@ owen_exact <- function(characteristic_func, union, n_players = NULL) {
     p <- p[-index_permutation, ]
   }
 
-  coa_set <- coalitions(n_players)[[2]]
+  # get value
   owen_value <- rep(0, n_players)
   for (j in 1:nrow(p)) {
     perm <- p[j, ]

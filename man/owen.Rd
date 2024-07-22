@@ -4,10 +4,16 @@
 \alias{owen}
 \title{Owen value}
 \usage{
-owen(value_func, union, method = "exact", n_rep = 10000, n_players = 0)
+owen(
+  characteristic_func,
+  union,
+  method = "exact",
+  n_rep = 10000,
+  n_players = 0
+)
 }
 \arguments{
-\item{value_func}{The valued function defined on the subsets of the number
+\item{characteristic_func}{The valued function defined on the subsets of the number
 of players}
 
 \item{union}{List of vectors indicating the apriori unions between the
@@ -20,7 +26,7 @@ calculation based on sampling.}
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation}
 
-\item{n_players}{Only used if \code{value_func} is a \code{function}.
+\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 }
 \value{

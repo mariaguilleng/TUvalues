@@ -4,13 +4,13 @@
 \alias{egalitarian}
 \title{Egalitarian value}
 \usage{
-egalitarian(value_func, n_players = 0)
+egalitarian(characteristic_func, n_players = 0)
 }
 \arguments{
-\item{value_func}{The valued function defined on the subsets of the number
+\item{characteristic_func}{The valued function defined on the subsets of the number
 of players}
 
-\item{n_players}{Only used if \code{value_func} is a \code{function}.
+\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 }
 \value{

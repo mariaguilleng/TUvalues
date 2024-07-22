@@ -1,3 +1,19 @@
+#' @title Owen value (approximation)
+#'
+#' @description Calculate the approximated Owen value based on sampling
+#'
+#' @param characteristic_func The valued function defined on the subsets of the number
+#' of players
+#' @param union List of vectors indicating the apriori unions between the
+#' players
+#' @param n_players The number of players
+#' @param n_rep The number of iterations to perform in the approximated
+#' calculation
+#'
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#'
+#' @return The Owen value for each player
+
 owen_appro <- function(characteristic_func, union, n_players, n_rep) {
 
   if (is.vector(characteristic_func)) {

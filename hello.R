@@ -15,7 +15,7 @@ coalitions(n)
 v <- c(1,1,2,1,2,2,2)
 
 shapley(v, method = "exact")
-shapley(v, method = "appro", n_rep = 100000)
+shapley(v, method = "appro", n_rep = 10000)
 
 
 # A symmetric voting game
@@ -32,7 +32,7 @@ v <- function(coalition) {
 shapley(v, method = "exact", n_players = n)
 
 tic <- Sys.time()
-shapley(v, method = "appro", n_rep = 100000, n_players = n)
+shapley(v, method = "appro", n_rep = 10000, n_players = n)
 toc <- Sys.time()
 toc-tic
 
@@ -42,8 +42,8 @@ toc-tic
 ###########
 
 v<-c(0,0,0,1,2,1,3)
-banzhaf(v, method = "appro", n_rep = 10000, replace = FALSE)
 banzhaf(v, method = "exact")
+banzhaf(v, method = "appro", n_rep = 10000, replace = FALSE)
 # 1.25 0.75 1.25
 
 # A symmetric voting game
@@ -56,6 +56,7 @@ v <- function(coalition) {
     return(0)
   }
 }
+banzhaf(v, method = "exact", n_players = n)
 
 tic <- Sys.time()
 banzhaf(v, method = "appro", n_rep = 10000, n_players = n, replace = TRUE)
@@ -96,6 +97,8 @@ equal_surplus_division(v,n)
 characteristic_func <- c(1,1,2,1,2,2,2)
 union <- list(c(1,2),c(3))
 owen(characteristic_func, union)
+owen(characteristic_func, union, method = "appro", n_rep = 10000)
+
 
 
 #[1] "Owen Value"
@@ -109,7 +112,7 @@ owen(characteristic_func, union, method = "appro", n_rep = 10000)
 # A symmetric voting game
 n <- 8
 v <- function(coalition) {
-  if (length(coalition) > 4) {
+  if (length(coalition) > n/2) {
     return(1)
   } else {
     return(0)
@@ -117,7 +120,15 @@ v <- function(coalition) {
 }
 u <- lapply(1:(n/2), function(i) c(2*i - 1, 2*i))
 owen(v, union = u, method = "exact", n_players = n)
-owen(v, union = u, method = "appro", n_rep = 50000, n_players = n)
+owen(v, union = u, method = "appro", n_rep = 10000, n_players = n)
 
 
+##########
+# BANZHAF-OWEN
+##########
+characteristic_func <- c(0,0,0,0,30,30,40,40,50,50,60,70,80,90,100)
+union <- list(c(1,3),c(2),c(4))
+banzhaf_owen(characteristic_func, union)
+banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000)
+banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000, replace = FALSE)
 

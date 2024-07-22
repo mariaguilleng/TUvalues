@@ -4,13 +4,13 @@
 \alias{equal_surplus_division}
 \title{Equal Surplus Division value}
 \usage{
-equal_surplus_division(value_func, n_players = 0)
+equal_surplus_division(characteristic_func, n_players = 0)
 }
 \arguments{
-\item{value_func}{The valued function defined on the subsets of the number
+\item{characteristic_func}{The valued function defined on the subsets of the number
 of players}
 
-\item{n_players}{Only used if \code{value_func} is a \code{function}.
+\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 }
 \value{

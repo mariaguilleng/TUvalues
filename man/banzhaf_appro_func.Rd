@@ -12,6 +12,11 @@ of players}
 
 \item{n_rep}{The number of iterations to perform in the approximated
 calculation}
+
+\item{n_players}{Only used if \code{value_func} is a \code{function}.
+The number of players in the game.}
+
+\item{replace}{should sampling be with replacement?}
 }
 \value{
 The Shapley value for each player
