@@ -44,7 +44,6 @@ v <- function(coalition) {
   }
 }
 u <- lapply(1:(n/2), function(i) c(2*i - 1, 2*i))
-owen(v, union = u, method = "exact", n_players = n)
 owen(v, union = u, method = "appro", n_rep = 10000, n_players = n)
 
 characteristic_func <- c(1,1,2,1,2,2,2)

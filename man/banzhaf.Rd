@@ -48,6 +48,6 @@ banzhaf(v, method = "appro", n_rep = 10000, n_players = n, replace = TRUE)
 
 v<-c(0,0,0,1,2,1,3)
 banzhaf(v, method = "exact")
-banzhaf(v, method = "appro", n_rep = 10000, replace = FALSE)
+banzhaf(v, method = "appro", n_rep = 10000, replace = TRUE)
 
 }

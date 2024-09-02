@@ -35,7 +35,6 @@ if (length(coalition) > n/2) {
    return(0)
  }
 }
-shapley(v, method = "exact", n_players = n)
 shapley(v, method = "appro", n_rep = 20000, n_players = n)
 
 n <- 3
