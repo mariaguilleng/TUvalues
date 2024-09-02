@@ -159,8 +159,11 @@ banzhaf_appro_func <- function(value_func,n_rep,n_players,replace = TRUE){
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
+#' @param n_players Only used if \code{value_func} is a \code{function}.
+#' The number of players in the game
 #' @param n_rep The number of iterations to perform in the approximated
 #' calculation
+#' @param replace should sampling be with replacement?
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'

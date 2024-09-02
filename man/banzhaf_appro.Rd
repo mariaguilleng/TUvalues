@@ -10,8 +10,13 @@ banzhaf_appro(characteristic_func, n_players, n_rep, replace = TRUE)
 \item{characteristic_func}{The valued function defined on the subsets of the number
 of players}
 
+\item{n_players}{Only used if \code{value_func} is a \code{function}.
+The number of players in the game}
+
 \item{n_rep}{The number of iterations to perform in the approximated
 calculation}
+
+\item{replace}{should sampling be with replacement?}
 }
 \value{
 The Shapley value for each player

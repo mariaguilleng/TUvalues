@@ -12,8 +12,6 @@
 
 banzhaf_owen_exact <- function(characteristic_func, union, n_players) {
 
-  browser()
-
   if (is.vector(characteristic_func)) {
     # get number of players
     n_players<-log(length(characteristic_func),2)

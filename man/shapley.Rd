@@ -8,21 +8,39 @@ shapley(characteristic_func, method = "exact", n_rep = 10000, n_players = 0)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
-of players}
+of players.}
 
 \item{method}{Method used to calculate the Shapley value. Valid methods are:
-\code{exact} for the exact value or \code{appro} for approximated polynomial
+\code{exact} for the exact calculation or \code{appro} for approximated polynomial
 calculation based on sampling.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
-iterations to perform in the approximated calculation}
+iterations to perform in the approximated calculation.}
 
 \item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 }
 \value{
-The Shapley value for each player
+The Shapley value for each player.
 }
 \description{
 Calculate the Shapley value
+}
+\examples{
+n <- 14
+v <- function(coalition) {
+if (length(coalition) > n/2) {
+   return(1)
+ } else {
+   return(0)
+ }
+}
+shapley(v, method = "exact", n_players = n)
+shapley(v, method = "appro", n_rep = 20000, n_players = n)
+
+n <- 3
+v <- c(1,1,2,1,2,2,2)
+shapley(v, method = "exact")
+shapley(v, method = "appro", n_rep = 10000)
+
 }

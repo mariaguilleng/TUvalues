@@ -132,3 +132,16 @@ banzhaf_owen(characteristic_func, union)
 banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000)
 banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000, replace = FALSE)
 
+# A symmetric voting game
+n <- 10
+v <- function(coalition) {
+  if (length(coalition) > n/2) {
+    return(1)
+  } else {
+    return(0)
+  }
+}
+u <- lapply(1:(n/2), function(i) c(2*i - 1, 2*i))
+banzhaf_owen(v, union = u, method = "exact", n_players = n)
+banzhaf_owen(v, union = u, method = "appro", n_rep = 10000, n_players = n)
+

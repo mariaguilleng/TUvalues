@@ -1,3 +1,18 @@
+#' @title Banzhaf-Owen Value
+#'
+#' @description Calculate the approximated Banzhaf-Owen value
+#'
+#' @param characteristic_func The valued function defined on the subsets of the number
+#' of players
+#' @param union List of vectors indicating the apriori unions between the
+#' players
+#' @param n_rep Only used if \code{method} is \code{appro}. The number of
+#' iterations to perform in the approximated calculation.
+#' @param n_players The number of players
+#' @param replace should sampling be with replacement?
+#'
+#' @return The Banzhaf-Owen Index for each player
+
 banzhaf_owen_appro <- function(characteristic_func, union, n_players, n_rep, replace) {
 
   if (is.vector(characteristic_func)) {

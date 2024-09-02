@@ -10,7 +10,7 @@ banzhaf_owen(
   method = "exact",
   n_rep = 10000,
   n_players = 0,
-  replace = FALSE
+  replace = TRUE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ of players}
 players}
 
 \item{method}{Method used to calculate the Owen value. Valid methods are:
-\code{exact} for the exact value or \code{appro} for approximated polynomial
+\code{exact} for the exact calculation or \code{appro} for approximated polynomial
 calculation based on sampling.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
@@ -29,10 +29,19 @@ iterations to perform in the approximated calculation}
 
 \item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
+
+\item{replace}{should sampling be with replacement?}
 }
 \value{
 The Banzhaf-Owen value for each player
 }
 \description{
 Calculate the Banzhaf-Owen value
+}
+\examples{
+characteristic_func <- c(0,0,0,0,30,30,40,40,50,50,60,70,80,90,100)
+union <- list(c(1,3),c(2),c(4))
+banzhaf_owen(characteristic_func, union)
+banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000)
+
 }

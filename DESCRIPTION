@@ -12,15 +12,15 @@ Authors@R:c(
            family = "Gonçalves", 
            role = c("aut"),
            email = "jgoncalves@umh.es",
-           comment = c(ORCID = "0000-0002-0867-0004")),
-     )
+           comment = c(ORCID = "0000-0002-0867-0004"))
+    )
 Maintainer: Maria D. Guillen <maria.guilleng@umh.es>
 Description: The main objective of cooperative games is to allocate a good among the agents involved. This package includes the most well-known
-allocation rules: the Shapley value, the Banzhaf value, the egalitarian rule, and the equal surplus division value. In addition,
-  it considers the point of view of a priori unions, i.e., situations in which agents can form coalitions. For this purpose, the package
+  allocation rules, i.e., the Shapley value, the Banzhaf value, the egalitarian rule, and the equal surplus division value. In addition,
+  it considers the point of view of a priori unions (situations in which agents can form coalitions). For this purpose, the package
   includes the Owen value, the Banzhaf-Owen value, and the corresponding extensions of the egalitarian rules. All these values can be
   calculated exactly or estimated by sampling.
-License: What license is it under?
+License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
