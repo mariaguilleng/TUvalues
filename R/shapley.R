@@ -15,6 +15,18 @@
 #'
 #' @return The Shapley value for each player
 #'
+#' @example
+#' n <- 14
+#' v <- function(coalition) {
+#' if (length(coalition) > n/2) {
+#'    return(1)
+#'  } else {
+#'    return(0)
+#'  }
+#' }
+#' shapley(v, method = "exact", n_players = n)
+#' shapley(v, method = "appro", n_rep = 20000, n_players = n)
+#'
 #' @export
 
 shapley <- function(characteristic_func, method = "exact", n_rep = 10000, n_players = 0){

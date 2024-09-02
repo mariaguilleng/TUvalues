@@ -16,6 +16,18 @@
 #'
 #' @return The Banzhaf value for each player
 #'
+#' @example
+#' n <- 10
+#' v <- function(coalition) {
+#' if (length(coalition) > n/2) {
+#'    return(1)
+#'  } else {
+#'    return(0)
+#'  }
+#' }
+#' banzhaf(v, method = "exact", n_players = n)
+#' banzhaf(v, method = "appro", n_rep = 10000, n_players = n, replace = TRUE)
+#'
 #' @export
 
 banzhaf <- function(characteristic_func, method = "exact", n_rep = 10000, n_players = 0,

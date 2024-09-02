@@ -10,6 +10,17 @@
 #'
 #' @return The egalitarian value for each player
 #'
+#' @example
+#' n <- 10
+#' v <- function(coalition) {
+#'   if (length(coalition) > n/2) {
+#'     return(1)
+#'   } else {
+#'     return(0)
+#'   }
+#' }
+#' egalitarian(v,n)
+#'
 #' @export
 
 egalitarian <- function(characteristic_func, n_players = 0) {

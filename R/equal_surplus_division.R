@@ -10,6 +10,17 @@
 #'
 #' @return The equal surplus division value for each player
 #'
+#' @example
+#' n <- 10
+#' v <- function(coalition) {
+#'   if (length(coalition) > n/2) {
+#'     return(1)
+#'   } else {
+#'     return(0)
+#'   }
+#' }
+#' equal_surplus_division(v,n)
+#'
 #' @export
 
 equal_surplus_division <- function(characteristic_func, n_players = 0) {

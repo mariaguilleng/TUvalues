@@ -110,7 +110,7 @@ owen(characteristic_func, union, method = "appro", n_rep = 10000)
 
 
 # A symmetric voting game
-n <- 8
+n <- 10
 v <- function(coalition) {
   if (length(coalition) > n/2) {
     return(1)
