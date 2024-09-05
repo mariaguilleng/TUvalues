@@ -9,7 +9,7 @@
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
-#' @return The Shapley value for each player
+#' @return The Banzhaf Index for each player
 
 banzhaf_appro_vector <- function(value_func,n_rep){
 
@@ -77,9 +77,9 @@ banzhaf_appro_vector <- function(value_func,n_rep){
 }
 
 
-#' @title Banzhaf value (approximation)
+#' @title Banzhaf Index (approximation)
 #'
-#' @description Calculate the approximated Shapley value based on sampling
+#' @description Calculate the approximated Banzhaf Index based on sampling
 #'
 #' @param value_func The valued function defined on the subsets of the number
 #' of players
@@ -91,7 +91,7 @@ banzhaf_appro_vector <- function(value_func,n_rep){
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
-#' @return The Shapley value for each player
+#' @return The Banzhaf Index for each player
 
 banzhaf_appro_func <- function(value_func,n_rep,n_players,replace = TRUE){
 
@@ -167,7 +167,7 @@ banzhaf_appro_func <- function(value_func,n_rep,n_players,replace = TRUE){
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
-#' @return The Shapley value for each player
+#' @return The Banzhaf Index for each player
 
 banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace = TRUE){
 

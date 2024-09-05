@@ -4,7 +4,7 @@
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
-#' @param union List of vectors indicating the apriori unions between the
+#' @param union List of vectors indicating the a priori unions between the
 #' players
 #' @param n_players The number of players
 #'

@@ -19,7 +19,7 @@ calculation}
 \item{replace}{should sampling be with replacement?}
 }
 \value{
-The Shapley value for each player
+The Banzhaf Index for each player
 }
 \description{
 Calculate the approximated Banzhaf Index based on sampling

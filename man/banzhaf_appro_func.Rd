@@ -2,7 +2,7 @@
 % Please edit documentation in R/banzhaf_appro.R
 \name{banzhaf_appro_func}
 \alias{banzhaf_appro_func}
-\title{Banzhaf value (approximation)}
+\title{Banzhaf Index (approximation)}
 \usage{
 banzhaf_appro_func(value_func, n_rep, n_players, replace = TRUE)
 }
@@ -19,8 +19,8 @@ The number of players in the game.}
 \item{replace}{should sampling be with replacement?}
 }
 \value{
-The Shapley value for each player
+The Banzhaf Index for each player
 }
 \description{
-Calculate the approximated Shapley value based on sampling
+Calculate the approximated Banzhaf Index based on sampling
 }

@@ -4,7 +4,7 @@
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
-#' @param union List of vectors indicating the apriori unions between the
+#' @param union List of vectors indicating the a priori unions between the
 #' players
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.

@@ -16,21 +16,21 @@
 #' @return The Shapley value for each player.
 #'
 #' @examples
-#' n <- 14
+#' n <- 10
 #' v <- function(coalition) {
 #' if (length(coalition) > n/2) {
 #'    return(1)
 #'  } else {
 #'    return(0)
 #'  }
-#' }
-#' shapley(v, method = "appro", n_rep = 20000, n_players = n)
+#'
+#' shapley(v, method = "appro", n_rep = 4000, n_players = n)
 #'
 #' @examples
 #' n <- 3
 #' v <- c(1,1,2,1,2,2,2)
 #' shapley(v, method = "exact")
-#' shapley(v, method = "appro", n_rep = 10000)
+#' shapley(v, method = "appro", n_rep = 4000)
 #'
 #' @export
 

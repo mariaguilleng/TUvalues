@@ -5,7 +5,7 @@
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
-#' @param union List of vectors indicating the apriori unions between the
+#' @param union List of vectors indicating the a priori unions between the
 #' players
 #' @param method Method used to calculate the Owen value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
@@ -22,7 +22,7 @@
 #' characteristic_func <- c(0,0,0,0,30,30,40,40,50,50,60,70,80,90,100)
 #' union <- list(c(1,3),c(2),c(4))
 #' banzhaf_owen(characteristic_func, union)
-#' banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 10000)
+#' banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 4000)
 #'
 #' @export
 

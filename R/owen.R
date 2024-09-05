@@ -5,7 +5,7 @@
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players.
-#' @param union List of vectors indicating the apriori unions between the
+#' @param union List of vectors indicating the a priori unions between the
 #' players.
 #' @param method Method used to calculate the Owen value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
@@ -26,13 +26,13 @@
 #'   }
 #' }
 #' u <- lapply(1:(n/2), function(i) c(2*i - 1, 2*i))
-#' owen(v, union = u, method = "appro", n_rep = 10000, n_players = n)
+#' owen(v, union = u, method = "appro", n_rep = 4000, n_players = n)
 #'
 #' @examples
 #' characteristic_func <- c(1,1,2,1,2,2,2)
 #' union <- list(c(1,2),c(3))
 #' owen(characteristic_func, union)
-#' owen(characteristic_func, union, method = "appro", n_rep = 10000)
+#' owen(characteristic_func, union, method = "appro", n_rep = 4000)
 #'
 #' @export
 
