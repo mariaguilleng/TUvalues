@@ -3,11 +3,11 @@
 #' @description
 #' Calculate the Banzhaf value
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
+#' @param characteristic_func The valued function defined on the subsets of the
+#' number of players.
 #' @param method Method used to calculate the Banzhaf value. Valid methods are:
-#' \code{exact} for the exact value or \code{appro} for approximated polynomial
-#' calculation based on sampling.
+#' \code{exact} for the exact calculation or \code{appro} for approximated
+#' polynomial calculation based on sampling.
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
@@ -16,7 +16,7 @@
 #'
 #' @return The Banzhaf value for each player
 #'
-#' @example
+#' @examples
 #' n <- 10
 #' v <- function(coalition) {
 #' if (length(coalition) > n/2) {
@@ -26,9 +26,15 @@
 #'  }
 #' }
 #' banzhaf(v, method = "exact", n_players = n)
-#' banzhaf(v, method = "appro", n_rep = 10000, n_players = n, replace = TRUE)
+#' banzhaf(v, method = "appro", n_rep = 4000, n_players = n, replace = TRUE)
+#'
+#' @examples
+#' v<-c(0,0,0,1,2,1,3)
+#' banzhaf(v, method = "exact")
+#' banzhaf(v, method = "appro", n_rep = 4000, replace = TRUE)
 #'
 #' @export
+
 
 banzhaf <- function(characteristic_func, method = "exact", n_rep = 10000, n_players = 0,
                     replace = FALSE){

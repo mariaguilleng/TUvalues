@@ -19,3 +19,15 @@ The egalitarian value for each player
 \description{
 Calculate the egalitarian value
 }
+\examples{
+n <- 10
+v <- function(coalition) {
+  if (length(coalition) > n/2) {
+    return(1)
+  } else {
+    return(0)
+  }
+}
+egalitarian(v,n)
+
+}

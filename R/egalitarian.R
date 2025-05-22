@@ -10,7 +10,7 @@
 #'
 #' @return The egalitarian value for each player
 #'
-#' @example
+#' @examples
 #' n <- 10
 #' v <- function(coalition) {
 #'   if (length(coalition) > n/2) {

@@ -13,12 +13,12 @@ banzhaf(
 )
 }
 \arguments{
-\item{characteristic_func}{The valued function defined on the subsets of the number
-of players}
+\item{characteristic_func}{The valued function defined on the subsets of the
+number of players.}
 
 \item{method}{Method used to calculate the Banzhaf value. Valid methods are:
-\code{exact} for the exact value or \code{appro} for approximated polynomial
-calculation based on sampling.}
+\code{exact} for the exact calculation or \code{appro} for approximated
+polynomial calculation based on sampling.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation}
@@ -33,4 +33,21 @@ The Banzhaf value for each player
 }
 \description{
 Calculate the Banzhaf value
+}
+\examples{
+n <- 10
+v <- function(coalition) {
+if (length(coalition) > n/2) {
+   return(1)
+ } else {
+   return(0)
+ }
+}
+banzhaf(v, method = "exact", n_players = n)
+banzhaf(v, method = "appro", n_rep = 4000, n_players = n, replace = TRUE)
+
+v<-c(0,0,0,1,2,1,3)
+banzhaf(v, method = "exact")
+banzhaf(v, method = "appro", n_rep = 4000, replace = TRUE)
+
 }

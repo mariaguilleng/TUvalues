@@ -19,3 +19,15 @@ The equal surplus division value for each player
 \description{
 Calculate the equal surplus division value
 }
+\examples{
+n <- 10
+v <- function(coalition) {
+  if (length(coalition) > n/2) {
+    return(1)
+  } else {
+    return(0)
+  }
+}
+equal_surplus_division(v,n)
+
+}

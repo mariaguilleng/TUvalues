@@ -26,34 +26,31 @@ owen_exact <- function(characteristic_func, union, n_players = NULL) {
   coa_set <- coalitions(n_players)[[2]]
 
   # get valid permutations according to a apriori unions
-  n_perm_union <- factorial(length(union)) * prod(sapply(union, function(x) factorial(length(x))))
+  internal_perms <- lapply(union, function(block) permutations(n = length(block), r = length(block), v = block))
+  block_orders <- permutations(n = length(union), r = length(union))
 
-  p <- permutations(n_players, n_players)
-  index_permutation <- c()
-  for (k in 1:nrow(p)) {
-    for (i in 1:length(union)) {
-      union_aux <- union[[i]]
-      index <- c()
-      for (j in 1:length(union_aux)) {
-        index[j] <- which(p[k, ] == union_aux[j])
-      }
-      index_sort <- sort(index)
-      for (j in 1:(length(index_sort) - 1)) {
-        if (length(index_sort) > 1) {
-          if ((index_sort[j + 1] - index_sort[j]) != 1) {
-            index_permutation <- c(index_permutation, k)
-          }
-        }
-      }
+  p <- list()
+
+  for (i in 1:nrow(block_orders)) {
+    block_order <- block_orders[i, ]
+    block_perm_lists <- lapply(block_order, function(idx) internal_perms[[idx]])
+
+    # internal permutationaes for the blocks orders
+    index_grid <- expand.grid(lapply(block_perm_lists, function(mat) 1:nrow(mat)))
+
+    for (j in 1:nrow(index_grid)) {
+      perm <- do.call(c, Map(function(mat, row_idx) mat[row_idx, ],
+                             block_perm_lists, as.list(index_grid[j, ])))
+      p[[length(p) + 1]] <- perm
     }
   }
-  if (length(index_permutation) > 0) {
-    p <- p[-index_permutation, ]
-  }
+
+  p <- do.call(rbind, p)
+  n_perm_union <- nrow(p)
 
   # get value
   owen_value <- rep(0, n_players)
-  for (j in 1:nrow(p)) {
+  for (j in 1:n_perm_union) {
     perm <- p[j, ]
     for (i in 1:n_players) {
       if (is.function(characteristic_func)) {
