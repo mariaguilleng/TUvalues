@@ -10,7 +10,7 @@ owen_appro(characteristic_func, union, n_players, n_rep)
 \item{characteristic_func}{The valued function defined on the subsets of the number
 of players}
 
-\item{union}{List of vectors indicating the apriori unions between the
+\item{union}{List of vectors indicating the a priori unions between the
 players}
 
 \item{n_players}{The number of players}

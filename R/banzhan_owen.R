@@ -41,7 +41,6 @@ banzhaf_owen <- function(characteristic_func, union, method = "exact", n_rep = 1
     if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    #return("TO DO")
     return(banzhaf_owen_exact(characteristic_func, union, n_players))
   } else {
     if (n_rep < 1) {

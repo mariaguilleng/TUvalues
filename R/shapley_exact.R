@@ -32,15 +32,15 @@ shapley_exact <- function(characteristic_func, n_players){
       s_players <- length(s) # Number of players of the coalition
       if (coa_aux[j,i]==0){
         if (is.function(characteristic_func)) {
-          coa_aux[j,i]=-(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func(s)
+          coa_aux[j,i] <- -(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func(s)
         } else {
-          coa_aux[j,i]=-(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func[j]
+          coa_aux[j,i] <- -(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func[j]
         }
       } else {
         if (is.function(characteristic_func)) {
-          coa_aux[j,i]=(factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func(s)
+          coa_aux[j,i] <- (factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func(s)
         } else {
-          coa_aux[j,i]=(factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func[j]
+          coa_aux[j,i] <- (factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func[j]
         }
       }
     }
