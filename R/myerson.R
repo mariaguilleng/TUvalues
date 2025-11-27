@@ -62,7 +62,6 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
     stop("Invalid number of iterations specified. n_rep must be greater than 0.")
   }
 
-
   if (is.vector(characteristic_func)) {
 
     # get number of players
@@ -81,6 +80,24 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
     characteristic_func <- unlist(results_by_size)
   }
 
+  # Get the modified characteristic function for the graph game
+  characteristic_func_graph <- get_characteristic_func_graph(characteristic_func, n_players)
+
+  # Calculate Shapley value using the modified characteristic function
+  if (method == "exact") {
+    shapley_value <- shapley_exact(characteristic_func_graph, n_players)
+  } else {
+    shapley_value <- shapley_appro(characteristic_func_graph, n_players, n_rep)
+  }
+
+  return(shapley_value)
+
+}
+
+
+# Calculate Graph Characteristic Function
+get_characteristic_func_graph <- function(characteristic_func, n_players) {
+
   # Build Adjacency Matrix (G) from edges
   G_adj <- matrix(0, nrow = n_players, ncol = n_players)
   if (length(graph_edges) > 0) {
@@ -96,7 +113,7 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
     }
   }
 
-  # Calculate Graph Characteristic Function
+  # Calculate the characteristic function for the graph game
   characteristic_func_graph <- rep(0, length(characteristic_func))
 
   coa_matrix <- coalitions(n_players)$Binary[-1, ] # Exclude empty set
@@ -120,16 +137,7 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
     }
     characteristic_func_graph[i] <- v_s
   }
-
-  # Calculate Shapley value using the modified characteristic function
-  if (method == "exact") {
-    shapley_value <- shapley_exact(characteristic_func_graph, n_players)
-  } else {
-    shapley_value <- shapley_appro(characteristic_func_graph, n_players, n_rep)
-  }
-
-  return(shapley_value)
-
+  return(characteristic_func_graph)
 }
 
 
