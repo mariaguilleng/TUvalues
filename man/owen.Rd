@@ -7,9 +7,9 @@
 owen(
   characteristic_func,
   union,
+  n_players = 0,
   method = "exact",
-  n_rep = 10000,
-  n_players = 0
+  n_rep = 10000
 )
 }
 \arguments{
@@ -19,14 +19,14 @@ of players.}
 \item{union}{List of vectors indicating the a priori unions between the
 players.}
 
+\item{n_players}{The number of players in the game.}
+
 \item{method}{Method used to calculate the Owen value. Valid methods are:
 \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-calculation based on sampling.}
+calculation based on sampling proposed by Saavedra-Nieves et al. (2018).}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
-
-\item{n_players}{The number of players in the game.}
 }
 \value{
 The Owen value for each player.
@@ -51,4 +51,9 @@ union <- list(c(1,2),c(3))
 owen(characteristic_func, union)
 owen(characteristic_func, union, method = "appro", n_rep = 4000)
 
+}
+\references{
+Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
+Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
+A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 }

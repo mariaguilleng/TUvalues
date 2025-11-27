@@ -24,5 +24,11 @@ iterations to perform in the approximated calculation.}
 The Banzhaf-Owen Index for each player
 }
 \description{
-Calculate the approximated Banzhaf-Owen value
+Calculate the approximated Banzhaf-Owen value using the
+algorithm proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
+}
+\references{
+Saavedra-Nieves, A., & Fiestras-Janeiro, M. G. (2021). Sampling
+methods to estimate the Banzhaf–Owen value. Annals of Operations Research,
+301(1), 199-223.
 }

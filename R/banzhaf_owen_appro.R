@@ -1,6 +1,7 @@
 #' @title Banzhaf-Owen Value
 #'
-#' @description Calculate the approximated Banzhaf-Owen value
+#' @description Calculate the approximated Banzhaf-Owen value using the
+#' algorithm proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
@@ -12,6 +13,10 @@
 #' @param replace should sampling be with replacement?
 #'
 #' @return The Banzhaf-Owen Index for each player
+#'
+#' @references Saavedra-Nieves, A., & Fiestras-Janeiro, M. G. (2021). Sampling
+#' methods to estimate the Banzhaf–Owen value. Annals of Operations Research,
+#' 301(1), 199-223.
 
 banzhaf_owen_appro <- function(characteristic_func, union, n_players, n_rep, replace) {
 

@@ -30,4 +30,7 @@ v <- function(coalition) {
 }
 equal_surplus_division(v,n)
 
+v <- c(1,1,2,1,2,2,2)
+equal_surplus_division(v)
+
 }

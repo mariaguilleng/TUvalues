@@ -1,6 +1,7 @@
 #' @title Owen value (approximation)
 #'
-#' @description Calculate the approximated Owen value based on sampling
+#' @description Calculate the approximated Owen value based on sampling using
+#' the algorithm proposed by Saavedra-Nieves et al. (2018).
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
@@ -13,6 +14,10 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @return The Owen value for each player
+#'
+#' @references Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
+#' Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
+#' A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 
 owen_appro <- function(characteristic_func, union, n_players, n_rep) {
 

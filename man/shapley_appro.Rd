@@ -19,5 +19,11 @@ calculation}
 The Shapley value for each player
 }
 \description{
-Calculate the approximated Shapley value based on sampling
+Calculate the approximated Shapley value based on sampling using
+the algorithm proposed by Castro et al. (2009).
+}
+\references{
+Castro, J., Gómez, D., & Tejada, J. (2009). Polynomial calculation
+of the Shapley value based on sampling. Computers & operations research,
+36(5), 1726-1730.
 }

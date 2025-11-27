@@ -22,5 +22,11 @@ calculation}
 The Owen value for each player
 }
 \description{
-Calculate the approximated Owen value based on sampling
+Calculate the approximated Owen value based on sampling using
+the algorithm proposed by Saavedra-Nieves et al. (2018).
+}
+\references{
+Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
+Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
+A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 }

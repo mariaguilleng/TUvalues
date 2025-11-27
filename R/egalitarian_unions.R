@@ -1,10 +1,12 @@
-#' @title Egalitarian value
+#' @title Egalitarian value with a priori unions
 #'
 #' @description
-#' Calculate the egalitarian value
+#' Calculate the egalitarian value in games with a priori unions
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
+#' @param union List of vectors indicating the a priori unions between the
+#' players.
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
 #'
@@ -19,16 +21,19 @@
 #'     return(0)
 #'   }
 #' }
-#' egalitarian(v,n)
+#' union <- list(1:4,5:n)
+#' egalitarian_unions(v,union,n)
 #'
 #' @examples
 #' v <- c(1,1,2,1,2,2,2)
-#' egalitarian(v)
+#' union <- list(c(1,2),c(3))
+#' egalitarian_unions(v, union)
 #'
 #' @export
 
-egalitarian <- function(characteristic_func, n_players = 0) {
+egalitarian_unions <- function(characteristic_func, union, n_players = 0) {
 
+  egalitarian_value <- rep(0, n_players)
   if (is.vector(characteristic_func)) {
 
     # get number of players
@@ -38,7 +43,11 @@ egalitarian <- function(characteristic_func, n_players = 0) {
       n_players<-log(length(characteristic_func),2)
     }
 
-    egalitarian_value <- characteristic_func[length(characteristic_func)]/n_players
+    num_unions <- length(union)
+    v_grand <- characteristic_func[length(characteristic_func)]
+    for (block in union) {
+      egalitarian_value[block] <- v_grand / (length(block) * num_unions)
+    }
 
   } else if (is.function(characteristic_func)) {
 
@@ -47,13 +56,16 @@ egalitarian <- function(characteristic_func, n_players = 0) {
              than 1.")
     }
 
-    egalitarian_value <- characteristic_func(seq(n_players))/n_players
+    num_unions <- length(union)
+    v_grand <- characteristic_func(seq(n_players))
+    for (block in union) {
+      egalitarian_value[block] <- v_grand / (length(block) * num_unions)
+    }
 
   } else {
     stop("Invalid characteristic_func provided.")
   }
 
-  egalitarian_value <- rep(egalitarian_value, n_players)
   names(egalitarian_value) <- seq(n_players)
   return(egalitarian_value)
 

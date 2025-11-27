@@ -1,12 +1,17 @@
 #' @title Shapley value (approximation)
 #'
-#' @description Calculate the approximated Shapley value based on sampling
+#' @description Calculate the approximated Shapley value based on sampling using
+#' the algorithm proposed by Castro et al. (2009).
 #'
 #' @param characteristic_func The valued function defined on the subsets of the number
 #' of players
 #' @param n_rep The number of iterations to perform in the approximated
 #' calculation
 #' @param n_players The number of players
+#'
+#' @references Castro, J., Gómez, D., & Tejada, J. (2009). Polynomial calculation
+#' of the Shapley value based on sampling. Computers & operations research,
+#' 36(5), 1726-1730.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'

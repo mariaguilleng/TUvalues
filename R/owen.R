@@ -7,14 +7,18 @@
 #' of players.
 #' @param union List of vectors indicating the a priori unions between the
 #' players.
+#' @param n_players The number of players in the game.
 #' @param method Method used to calculate the Owen value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-#' calculation based on sampling.
+#' calculation based on sampling proposed by Saavedra-Nieves et al. (2018).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
-#' @param n_players The number of players in the game.
 #'
 #' @return The Owen value for each player.
+#'
+#' @references Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
+#' Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
+#' A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 #'
 #' @examples
 #' n <- 10
@@ -36,7 +40,7 @@
 #'
 #' @export
 
-owen  <- function(characteristic_func, union, method = "exact", n_rep = 10000, n_players = 0){
+owen  <- function(characteristic_func, union, n_players = 0, method = "exact", n_rep = 10000){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -53,7 +57,7 @@ owen  <- function(characteristic_func, union, method = "exact", n_rep = 10000, n
     return(owen_exact(characteristic_func, union, n_players))
   } else {
     if (n_rep < 1) {
-      stop("Invalid number of iterations specified. m must be greater than 0.")
+      stop("Invalid number of iterations specified. n_rep must be greater than 0.")
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }

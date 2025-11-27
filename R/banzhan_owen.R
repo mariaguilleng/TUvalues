@@ -7,16 +7,20 @@
 #' of players
 #' @param union List of vectors indicating the a priori unions between the
 #' players
-#' @param method Method used to calculate the Owen value. Valid methods are:
-#' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-#' calculation based on sampling.
-#' @param n_rep Only used if \code{method} is \code{appro}. The number of
-#' iterations to perform in the approximated calculation
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
+#' @param method Method used to calculate the Owen value. Valid methods are:
+#' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
+#' calculation based on sampling proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
+#' @param n_rep Only used if \code{method} is \code{appro}. The number of
+#' iterations to perform in the approximated calculation
 #' @param replace should sampling be with replacement?
 #'
 #' @return The Banzhaf-Owen value for each player
+#'
+#' @references Saavedra-Nieves, A., & Fiestras-Janeiro, M. G. (2021). Sampling
+#' methods to estimate the Banzhaf–Owen value. Annals of Operations Research,
+#' 301(1), 199-223.
 #'
 #' @examples
 #' characteristic_func <- c(0,0,0,0,30,30,40,40,50,50,60,70,80,90,100)
@@ -26,8 +30,8 @@
 #'
 #' @export
 
-banzhaf_owen <- function(characteristic_func, union, method = "exact", n_rep = 10000,
-                    n_players = 0, replace = TRUE){
+banzhaf_owen <- function(characteristic_func, union, n_players = 0, method = "exact",
+                         n_rep = 10000, replace = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -44,7 +48,7 @@ banzhaf_owen <- function(characteristic_func, union, method = "exact", n_rep = 1
     return(banzhaf_owen_exact(characteristic_func, union, n_players))
   } else {
     if (n_rep < 1) {
-      stop("Invalid number of iterations specified. m must be greater than 0.")
+      stop("Invalid number of iterations specified. n_rep must be greater than 0.")
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }

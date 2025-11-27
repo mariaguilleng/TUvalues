@@ -15,7 +15,7 @@ shapley_exact <- function(characteristic_func, n_players){
     n_players<-log(length(characteristic_func),2)
     if (n_players!=round(n_players)){
       characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func+1),2)
+      n_players<-log(length(characteristic_func),2)
     }
     characteristic_func <- characteristic_func[-1]
   }

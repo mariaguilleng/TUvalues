@@ -4,21 +4,21 @@
 \alias{shapley}
 \title{Shapley value}
 \usage{
-shapley(characteristic_func, method = "exact", n_rep = 10000, n_players = 0)
+shapley(characteristic_func, n_players = 0, method = "exact", n_rep = 10000)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
 of players.}
 
-\item{method}{Method used to calculate the Shapley value. Valid methods are:
+\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
+The number of players in the game.}
+
+\item{method}{Method used to  alculate the Shapley value. Valid methods are:
 \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-calculation based on sampling.}
+calculation based on sampling proposed by Castro et al. (2009).}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
-
-\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
-The number of players in the game.}
 }
 \value{
 The Shapley value for each player.
@@ -42,4 +42,9 @@ v <- c(1,1,2,1,2,2,2)
 shapley(v, method = "exact")
 shapley(v, method = "appro", n_rep = 4000)
 
+}
+\references{
+Castro, J., Gómez, D., & Tejada, J. (2009). Polynomial calculation
+of the Shapley value based on sampling. Computers & operations research,
+36(5), 1726-1730.
 }

@@ -7,9 +7,9 @@
 banzhaf_owen(
   characteristic_func,
   union,
+  n_players = 0,
   method = "exact",
   n_rep = 10000,
-  n_players = 0,
   replace = TRUE
 )
 }
@@ -20,15 +20,15 @@ of players}
 \item{union}{List of vectors indicating the a priori unions between the
 players}
 
+\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
+The number of players in the game.}
+
 \item{method}{Method used to calculate the Owen value. Valid methods are:
 \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-calculation based on sampling.}
+calculation based on sampling proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation}
-
-\item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
-The number of players in the game.}
 
 \item{replace}{should sampling be with replacement?}
 }
@@ -44,4 +44,9 @@ union <- list(c(1,3),c(2),c(4))
 banzhaf_owen(characteristic_func, union)
 banzhaf_owen(characteristic_func, union, method = "appro", n_rep = 4000)
 
+}
+\references{
+Saavedra-Nieves, A., & Fiestras-Janeiro, M. G. (2021). Sampling
+methods to estimate the Banzhaf–Owen value. Annals of Operations Research,
+301(1), 199-223.
 }

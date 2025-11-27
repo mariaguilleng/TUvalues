@@ -12,7 +12,6 @@
 #'
 #' @return The Owen value for each player
 
-
 owen_exact <- function(characteristic_func, union, n_players = NULL) {
 
   if (is.vector(characteristic_func)) {
