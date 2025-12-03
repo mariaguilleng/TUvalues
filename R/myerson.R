@@ -38,7 +38,7 @@
 #' n <- 3
 #' graph_edges <- list(c(1, 2))
 #' myerson(v, graph_edges, n_players = n, method = "exact")
-#' myerson(v, graph_edges, n_players = n, method = "appro", n_rep = 10000)
+#' myerson(v, graph_edges, n_players = n, method = "appro", n_rep = 2000)
 #'
 #' @export
 
@@ -70,18 +70,31 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
       characteristic_func <- c(0, characteristic_func)
       n_players<-log(length(characteristic_func),2)
     }
-    characteristic_func <- characteristic_func[-1]
-
-  } else if (is.function(characteristic_func)) {
-    # Calculate v_coalitions if function is provided
-    results_by_size <- lapply(X = 1:n_players, FUN = function(m) {
-      return(combn(x = 1:n_players, m = m, FUN = characteristic_func))
-    })
-    characteristic_func <- unlist(results_by_size)
+    # get coalitions
+    coa_set <- coalitions(n_players)[[2]]
   }
 
-  # Get the modified characteristic function for the graph game
-  characteristic_func_graph <- get_characteristic_func_graph(characteristic_func, n_players)
+  # Adjacency Matrix from edges
+  G_adj <- get_adj_matrix(n_players, graph_edges)
+
+  # Calculate Graph Characteristic Function
+  characteristic_func_graph <- function(coalition) {
+    if (length(coalition) == 0) {
+      return(0)
+    }
+    components <- get_connected_components(coalition, G_adj, n_players)
+    v_s <- 0
+    for (comp in components) {
+      #browser()
+      if (is.function(characteristic_func)) {
+        v_s <- v_s + characteristic_func(comp)
+      } else {
+        comp_string <-  toString(comp)
+        v_s <- v_s + characteristic_func[which(coa_set == comp_string)]
+      }
+    }
+    return(v_s)
+  }
 
   # Calculate Shapley value using the modified characteristic function
   if (method == "exact") {
@@ -95,49 +108,23 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
 }
 
 
-# Calculate Graph Characteristic Function
-get_characteristic_func_graph <- function(characteristic_func, n_players) {
+# Build Adjacency Matrix (G) from edges
+get_adj_matrix <- function(n_players, graph_edges) {
 
-  # Build Adjacency Matrix (G) from edges
-  G_adj <- matrix(0, nrow = n_players, ncol = n_players)
+  G_adj <-  matrix(0, nrow = n_players, ncol = n_players)
   if (length(graph_edges) > 0) {
     for (edge in graph_edges) {
       if (length(edge) != 2) {
         stop("Invalid edges provided. Each edge must connect two players.
-             Error in edge: ", paste(edge, collapse = ", "))
+               Error in edge: ", paste(edge, collapse = ", "))
       }
       p1 <- edge[1]
       p2 <- edge[2]
       G_adj[p1, p2] <- 1
       G_adj[p2, p1] <- 1
     }
+    return(G_adj)
   }
-
-  # Calculate the characteristic function for the graph game
-  characteristic_func_graph <- rep(0, length(characteristic_func))
-
-  coa_matrix <- coalitions(n_players)$Binary[-1, ] # Exclude empty set
-  for (i in seq_len(nrow(coa_matrix))) {
-    coalition_vector <- coa_matrix[i, ]
-    players_in_S <- which(coalition_vector == 1)
-
-    # Find connected components within S
-    components <- get_connected_components(players_in_S, G_adj, n_players)
-
-    v_s <- 0
-    for (comp in components) {
-      # Create the binary vector for component comp
-      binary_component <- rep(0, n_players)
-      binary_component[comp] <- 1
-
-      # Find the corresponding index in the coa_matrix
-      coalition_index <- which(apply(coa_matrix, 1, function(row) all(row == binary_component)))
-      v_s <- v_s + characteristic_func[coalition_index]
-
-    }
-    characteristic_func_graph[i] <- v_s
-  }
-  return(characteristic_func_graph)
 }
 
 
@@ -178,4 +165,3 @@ get_connected_components <- function(players_in_S, adj_matrix, n_players) {
   }
   return(components)
 }
-

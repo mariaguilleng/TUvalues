@@ -8,32 +8,45 @@
 #' of the coalitions and a \code{vector} of the classical representation (as
 #' sets) of the coalitions
 #'
+#' @importFrom utils combn
+#'
 #' @export
 
 coalitions <- function(n_players){
 
-  # create binary representation of the possible coalitions
-  tryCatch(
-    expr = {
-      binary_coalitions <- expand.grid(rep(list(c(0, 1)), n_players))
-    },
-    error = function(e){
-      message(e)
-      stop("\nNumber of players is too big.")
+  # all posible combination of n_players
+  results_by_size <- lapply(X = 1:n_players, FUN = function(m) {
+    return(combn(x = 1:n_players, m = m))
+  })
+
+  # Empty coalition
+  empty_coalition <- rep(0, n_players)
+
+  # Binary matrix
+  all_binary_rows <- list(empty_coalition)
+  for (i in 1:n_players) {
+    combinations <- results_by_size[[i]]
+    for (j in 1:ncol(combinations)) {
+      binary_row <- rep(0, n_players)
+      players_in_coalition <- combinations[, j]
+      binary_row[players_in_coalition] <- 1
+      all_binary_rows[[length(all_binary_rows) + 1]] <- binary_row
     }
-  )
-  binary_coalitions <- binary_coalitions[order(rowSums(binary_coalitions)),]
+  }
+  binary_coalitions <- do.call(rbind, all_binary_rows)
+
+  # Output format
   colnames(binary_coalitions) <- 1:n_players
   rownames(binary_coalitions) <- 1:nrow(binary_coalitions)
 
-  # create classical representation (as sets) of the possible coalitions
+  # Classical representation (as sets)
   classic_coalitions <- c()
   for (i in 1:nrow(binary_coalitions)) {
     cols <- which(binary_coalitions[i, ] == 1)
     classic_coalitions[i] <- toString(cols)
   }
 
-  # return both representations in a list
+  # Return both representations in a list
   sol<-list(binary_coalitions,classic_coalitions)
   names(sol)<-c("Binary","Classic")
   return(sol)

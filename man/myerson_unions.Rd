@@ -20,6 +20,9 @@ of players. It can be provided as a vector or as a function.}
 \item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 
+\item{unions}{List of vectors indicating the a priori unions between the
+players.}
+
 \item{graph_edges}{Edges of the communication graph of the game. It must be
 a \code{list} of pairs indicating the connected players.}
 
@@ -29,9 +32,6 @@ calculation based on sampling proposed.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
-
-\item{union}{List of vectors indicating the a priori unions between the
-players.}
 }
 \value{
 The Myerson value for each player.
@@ -40,16 +40,6 @@ The Myerson value for each player.
 Calculate the Myerson value in a communication game with a priori unions.
 }
 \examples{
-characteristic_func <- c(
-1, 2, 0, 3,
-3, 1, 4, 2, 5, 3,
-3, 6, 4, 5,
-15
-)
-graph_edges <- list(c(1, 2), c(2, 4))
-myerson(characteristic_func, graph_edges, method = "exact")
-myerson(characteristic_func, graph_edges, method = "appro", n_rep = 100)
-
 v <- c(
   0, 0, 0, 0,
   1, 1, 1, 0, 0, 0,
@@ -58,7 +48,7 @@ v <- c(
 )
 graph_edges <- list(c(2,3),c(3,1),c(1,4))
 unions <- list(c(2,3),c(1),c(4))
-myerson_unions(v, graph_edges, unions, method = "exact")
-myerson_unions(v, graph_edges, unions, method = "appro", n_rep = 1000)
+myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "exact")
+myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "appro", n_rep = 1000)
 
 }
