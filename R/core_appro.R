@@ -8,6 +8,9 @@
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
 #' @param n_rep The number of iterations to perform in the algorithm.
+#' @param echo Show progress of the calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The vertices of the estimated core
 #'
@@ -21,7 +24,7 @@
 #'
 #' @export
 
-core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000){
+core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000, echo){
 
   if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
     stop("Invalid characteristic_func provided.")
@@ -52,8 +55,18 @@ core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000){
   # get coalition matrix
   coa_matrix <- as.matrix(coalitions(n_players)$Binary)
 
+  # init progress bar
+  if (echo) {
+    pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+  }
+
   solutions <- list()
   for (rep in seq(n_rep)) {
+
+    # update progress bar
+    if (echo) {
+      setTxtProgressBar(pb, rep)
+    }
 
     # Get a random vector uniformly distributed on the unit sphere
     direction <- random_vector_sphere(n_players)
@@ -79,6 +92,10 @@ core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000){
       solutions[[length(solutions) + 1]] <- solver$solution()$col_value
     }
 
+  }
+
+  if (echo) {
+    close(pb)
   }
 
   if (length(solutions) == 0) {

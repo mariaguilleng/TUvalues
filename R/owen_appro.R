@@ -10,6 +10,7 @@
 #' @param n_players The number of players
 #' @param n_rep The number of iterations to perform in the approximated
 #' calculation
+#' @param echo Show progress of the calculation.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
@@ -19,7 +20,7 @@
 #' Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
 #' A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 
-owen_appro <- function(characteristic_func, union, n_players, n_rep) {
+owen_appro <- function(characteristic_func, union, n_players, n_rep, echo) {
 
   if (is.vector(characteristic_func)) {
     # Get number of players
@@ -33,10 +34,19 @@ owen_appro <- function(characteristic_func, union, n_players, n_rep) {
 
   # Init
   owen_value <- rep(0, n_players)
-  pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+
+  # init progress bar
+  if (echo) {
+    pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+  }
+
 
   for (rep in 1:n_rep) {
-    setTxtProgressBar(pb, rep)
+
+    # update progress bar
+    if (echo) {
+      setTxtProgressBar(pb, rep)
+    }
 
     # Choose a valid perm
     perm <- unlist(lapply(sample(union), function(x) if (length(x) == 1) x else sample(x)))
@@ -60,7 +70,9 @@ owen_appro <- function(characteristic_func, union, n_players, n_rep) {
       owen_value[i] <- owen_value[i] + x_perm_player
     }
   }
-  close(pb)
+  if (echo) {
+    close(pb)
+  }
   owen_value <- owen_value / n_rep
   names(owen_value) <- 1:n_players
   return(owen_value)

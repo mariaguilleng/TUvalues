@@ -12,6 +12,8 @@
 #' based on Camacho et al. (2025).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The centroid of the core if it exists.
 #'
@@ -43,7 +45,8 @@
 #'
 #' @export
 
-centroid <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 1000){
+centroid <- function(characteristic_func, n_players = 0, method = "exact",
+                     n_rep = 1000, echo = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -64,7 +67,7 @@ centroid <- function(characteristic_func, n_players = 0, method = "exact", n_rep
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    core <- core_appro(characteristic_func, n_players, n_rep)
+    core <- core_appro(characteristic_func, n_players, n_rep, echo)
   }
 
   if (is.null(core)) {

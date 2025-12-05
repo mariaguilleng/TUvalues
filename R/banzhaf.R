@@ -12,7 +12,9 @@
 #' polynomial calculation based on sampling.
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation
-#' @param replace should sampling be with replacement?
+#' @param replace Should sampling be with replacement?
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The Banzhaf value for each player
 #'
@@ -37,7 +39,7 @@
 
 
 banzhaf <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 10000,
-                    replace = FALSE){
+                    replace = FALSE, echo = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -58,7 +60,7 @@ banzhaf <- function(characteristic_func, n_players = 0, method = "exact", n_rep 
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    return(banzhaf_appro(characteristic_func, n_players, n_rep, replace))
+    return(banzhaf_appro(characteristic_func, n_players, n_rep, replace, echo))
   }
 
 }

@@ -9,7 +9,8 @@ myerson(
   graph_edges,
   n_players = 0,
   method = "exact",
-  n_rep = 10000
+  n_rep = 10000,
+  echo = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ calculation based on sampling proposed.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
+
+\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
+approximated calculation.}
 }
 \value{
 The Myerson value for each player.
@@ -44,7 +48,7 @@ characteristic_func <- c(
 )
 graph_edges <- list(c(1, 2), c(2, 4))
 myerson(characteristic_func, graph_edges, method = "exact")
-myerson(characteristic_func, graph_edges, method = "appro", n_rep = 100)
+myerson(characteristic_func, graph_edges, method = "appro", n_rep = 1000)
 
 v <- function(S) {
   if (length(S) == 2) {
@@ -55,6 +59,6 @@ v <- function(S) {
 n <- 3
 graph_edges <- list(c(1, 2))
 myerson(v, graph_edges, n_players = n, method = "exact")
-myerson(v, graph_edges, n_players = n, method = "appro", n_rep = 10000)
+myerson(v, graph_edges, n_players = n, method = "appro", n_rep = 2000)
 
 }

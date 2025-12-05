@@ -4,7 +4,13 @@
 \alias{coreVertex}
 \title{Vertices of the core of the game}
 \usage{
-coreVertex(characteristic_func, n_players = 0, method = "exact", n_rep = 1000)
+coreVertex(
+  characteristic_func,
+  n_players = 0,
+  method = "exact",
+  n_rep = 1000,
+  echo = TRUE
+)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number

@@ -4,7 +4,13 @@
 \alias{shapley}
 \title{Shapley value}
 \usage{
-shapley(characteristic_func, n_players = 0, method = "exact", n_rep = 10000)
+shapley(
+  characteristic_func,
+  n_players = 0,
+  method = "exact",
+  n_rep = 10000,
+  echo = TRUE
+)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -19,6 +25,9 @@ calculation based on sampling proposed by Castro et al. (2009).}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
+
+\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
+approximated calculation.}
 }
 \value{
 The Shapley value for each player.

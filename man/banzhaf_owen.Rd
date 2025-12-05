@@ -10,7 +10,8 @@ banzhaf_owen(
   n_players = 0,
   method = "exact",
   n_rep = 10000,
-  replace = TRUE
+  replace = TRUE,
+  echo = TRUE
 )
 }
 \arguments{
@@ -30,7 +31,10 @@ calculation based on sampling proposed by Saavedra-Nieves & Fiestras-Janeiro (20
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation}
 
-\item{replace}{should sampling be with replacement?}
+\item{replace}{Should sampling be with replacement?}
+
+\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
+approximated calculation.}
 }
 \value{
 The Banzhaf-Owen value for each player

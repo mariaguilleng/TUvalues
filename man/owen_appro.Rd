@@ -4,7 +4,7 @@
 \alias{owen_appro}
 \title{Owen value (approximation)}
 \usage{
-owen_appro(characteristic_func, union, n_players, n_rep)
+owen_appro(characteristic_func, union, n_players, n_rep, echo)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -17,6 +17,8 @@ players}
 
 \item{n_rep}{The number of iterations to perform in the approximated
 calculation}
+
+\item{echo}{Show progress of the calculation.}
 }
 \value{
 The Owen value for each player

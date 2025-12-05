@@ -14,6 +14,8 @@
 #' calculation based on sampling proposed.
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The Myerson value for each player.
 #'
@@ -26,7 +28,7 @@
 #' )
 #' graph_edges <- list(c(1, 2), c(2, 4))
 #' myerson(characteristic_func, graph_edges, method = "exact")
-#' myerson(characteristic_func, graph_edges, method = "appro", n_rep = 100)
+#' myerson(characteristic_func, graph_edges, method = "appro", n_rep = 1000)
 #'
 #' @examples
 #' v <- function(S) {
@@ -43,7 +45,7 @@
 #' @export
 
 myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "exact",
-                    n_rep = 10000){
+                    n_rep = 10000, echo = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\"
@@ -100,7 +102,7 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
   if (method == "exact") {
     shapley_value <- shapley_exact(characteristic_func_graph, n_players)
   } else {
-    shapley_value <- shapley_appro(characteristic_func_graph, n_players, n_rep)
+    shapley_value <- shapley_appro(characteristic_func_graph, n_players, n_rep, echo)
   }
 
   return(shapley_value)

@@ -10,7 +10,8 @@ myerson_unions(
   unions,
   graph_edges,
   method = "exact",
-  n_rep = 10000
+  n_rep = 10000,
+  echo = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ calculation based on sampling proposed.}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
+
+\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
+approximated calculation.}
 }
 \value{
 The Myerson value for each player.
@@ -49,6 +53,6 @@ v <- c(
 graph_edges <- list(c(2,3),c(3,1),c(1,4))
 unions <- list(c(2,3),c(1),c(4))
 myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "exact")
-myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "appro", n_rep = 1000)
+myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "appro", n_rep = 2000)
 
 }

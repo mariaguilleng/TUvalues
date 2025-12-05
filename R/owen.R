@@ -13,6 +13,8 @@
 #' calculation based on sampling proposed by Saavedra-Nieves et al. (2018).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The Owen value for each player.
 #'
@@ -40,7 +42,7 @@
 #'
 #' @export
 
-owen  <- function(characteristic_func, union, n_players = 0, method = "exact", n_rep = 10000){
+owen  <- function(characteristic_func, union, n_players = 0, method = "exact", n_rep = 10000, echo = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -61,7 +63,7 @@ owen  <- function(characteristic_func, union, n_players = 0, method = "exact", n
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    return(owen_appro(characteristic_func, union, n_players, n_rep))
+    return(owen_appro(characteristic_func, union, n_players, n_rep, echo))
   }
 
 }

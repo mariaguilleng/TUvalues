@@ -4,7 +4,7 @@
 \alias{banzhaf_appro}
 \title{Banzhaf Index (approximated)}
 \usage{
-banzhaf_appro(characteristic_func, n_players, n_rep, replace = TRUE)
+banzhaf_appro(characteristic_func, n_players, n_rep, replace, echo)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -15,7 +15,9 @@ of players}
 \item{n_rep}{The number of iterations to perform in the approximated
 calculation}
 
-\item{replace}{should sampling be with replacement?}
+\item{replace}{Should sampling be with replacement?}
+
+\item{echo}{Show progress of the calculation.}
 }
 \value{
 The Shapley value for each player

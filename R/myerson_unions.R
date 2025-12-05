@@ -16,6 +16,8 @@
 #' calculation based on sampling proposed.
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The Myerson value for each player.
 #'
@@ -34,7 +36,7 @@
 #' @export
 
 myerson_unions <- function(characteristic_func, n_players = 0, unions,
-                           graph_edges,  method = "exact", n_rep = 10000){
+                           graph_edges,  method = "exact", n_rep = 10000, echo = TRUE){
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\"
@@ -92,7 +94,7 @@ myerson_unions <- function(characteristic_func, n_players = 0, unions,
   if (method == "exact") {
     owen_value <- owen_exact(characteristic_func_graph, unions, n_players)
   } else {
-    owen_value <- owen_appro(characteristic_func_graph, unions, n_players, n_rep)
+    owen_value <- owen_appro(characteristic_func_graph, unions, n_players, n_rep, echo)
   }
 
   return(owen_value)

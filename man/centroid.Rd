@@ -4,7 +4,13 @@
 \alias{centroid}
 \title{Centroid of the core of the game}
 \usage{
-centroid(characteristic_func, n_players = 0, method = "exact", n_rep = 1000)
+centroid(
+  characteristic_func,
+  n_players = 0,
+  method = "exact",
+  n_rep = 1000,
+  echo = TRUE
+)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -19,6 +25,9 @@ based on Camacho et al. (2025).}
 
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
+
+\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
+approximated calculation.}
 }
 \value{
 The centroid of the core if it exists.

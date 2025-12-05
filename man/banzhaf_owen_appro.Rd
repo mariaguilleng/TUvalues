@@ -4,7 +4,7 @@
 \alias{banzhaf_owen_appro}
 \title{Banzhaf-Owen Value}
 \usage{
-banzhaf_owen_appro(characteristic_func, union, n_players, n_rep, replace)
+banzhaf_owen_appro(characteristic_func, union, n_players, n_rep, replace, echo)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -18,7 +18,9 @@ players}
 \item{n_rep}{Only used if \code{method} is \code{appro}. The number of
 iterations to perform in the approximated calculation.}
 
-\item{replace}{should sampling be with replacement?}
+\item{replace}{Should sampling be with replacement?}
+
+\item{echo}{Show progress of the calculation.}
 }
 \value{
 The Banzhaf-Owen Index for each player

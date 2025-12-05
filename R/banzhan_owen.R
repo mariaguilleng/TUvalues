@@ -14,7 +14,9 @@
 #' calculation based on sampling proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation
-#' @param replace should sampling be with replacement?
+#' @param replace Should sampling be with replacement?
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The Banzhaf-Owen value for each player
 #'
@@ -31,7 +33,7 @@
 #' @export
 
 banzhaf_owen <- function(characteristic_func, union, n_players = 0, method = "exact",
-                         n_rep = 10000, replace = TRUE){
+                         n_rep = 10000, replace = TRUE, echo = TRUE) {
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -52,7 +54,7 @@ banzhaf_owen <- function(characteristic_func, union, n_players = 0, method = "ex
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    return(banzhaf_owen_appro(characteristic_func, union, n_players, n_rep, replace))
+    return(banzhaf_owen_appro(characteristic_func, union, n_players, n_rep, replace, echo))
   }
 
 }

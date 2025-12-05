@@ -7,13 +7,14 @@
 #' @param n_rep The number of iterations to perform in the approximated
 #' calculation
 #' @param n_players The number of players
-#' @param replace should sampling be with replacement?
+#' @param replace Should sampling be with replacement?
+#' @param echo Show progress of the calculation.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @return The Shapley value for each player
 
-banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace = TRUE){
+banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace, echo){
 
   if (is.vector(characteristic_func)) {
     # get number of players
@@ -31,7 +32,9 @@ banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace = TRUE){
     n_rep <- min(n_rep, 2**(n_players-1))
     used_coalitions <- list()
   }
-  pb <- txtProgressBar(min = 0, max = n_rep*n_players, style = 3)
+  if (echo) {
+    pb <- txtProgressBar(min = 0, max = n_rep*n_players, style = 3)
+  }
 
   # probability of the size of the coalitions
   prob_coalition <- sapply(1:n_players, function(i) choose(n_players, i - 1))
@@ -44,7 +47,9 @@ banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace = TRUE){
     for (rep in 1:n_rep) {
 
       # Update the progress bar
-      setTxtProgressBar(pb, ((i-1)*n_rep)+rep)
+      if (echo) {
+        setTxtProgressBar(pb, ((i-1)*n_rep)+rep)
+      }
 
       # S in all(S) with probability 1/2**n WITHOUT repetition
       if (!replace) {
@@ -82,7 +87,9 @@ banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace = TRUE){
 
     }
   }
-  close(pb)
+  if (echo) {
+    close(pb)
+  }
   banzhaf_value <- banzhaf_value/n_rep
   names(banzhaf_value) <- 1:n_players
   return(banzhaf_value)

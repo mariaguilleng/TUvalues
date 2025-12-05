@@ -8,6 +8,7 @@
 #' @param n_rep The number of iterations to perform in the approximated
 #' calculation
 #' @param n_players The number of players
+#' @param echo Show progress of the calculation.
 #'
 #' @references Castro, J., Gómez, D., & Tejada, J. (2009). Polynomial calculation
 #' of the Shapley value based on sampling. Computers & operations research,
@@ -17,7 +18,7 @@
 #'
 #' @return The Shapley value for each player
 
-shapley_appro <- function(characteristic_func,n_players,n_rep){
+shapley_appro <- function(characteristic_func,n_players,n_rep, echo){
 
   if (is.vector(characteristic_func)) {
     # get number of players
@@ -32,13 +33,17 @@ shapley_appro <- function(characteristic_func,n_players,n_rep){
 
 
   # init progress bar
-  pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+  if (echo) {
+    pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+  }
 
   shapley_value <- rep(0, n_players)
   for (rep in 1:n_rep) {
 
     # Update the progress bar
-    setTxtProgressBar(pb, rep)
+    if (echo) {
+      setTxtProgressBar(pb, rep)
+    }
 
     # O in pi(N) with probability 1/n!
     perm <- sample(1:n_players)
@@ -65,7 +70,9 @@ shapley_appro <- function(characteristic_func,n_players,n_rep){
       shapley_value[i] <- shapley_value[i] + x_perm_player
     }
   }
-  close(pb)
+  if (echo) {
+    close(pb)
+  }
   shapley_value <- shapley_value/n_rep
   return(shapley_value)
 

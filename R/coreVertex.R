@@ -43,7 +43,8 @@
 #'
 #' @export
 
-coreVertex <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 1000){
+coreVertex <- function(characteristic_func, n_players = 0, method = "exact",
+                       n_rep = 1000, echo = TRUE) {
 
   if (! method %in% c("exact", "appro")) {
     stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
@@ -64,7 +65,7 @@ coreVertex <- function(characteristic_func, n_players = 0, method = "exact", n_r
     } else if (is.function(characteristic_func) && n_players < 2) {
       stop("Invalid number of players specified. n_players must be greater than 1.")
     }
-    return(core_appro(characteristic_func, n_players, n_rep))
+    return(core_appro(characteristic_func, n_players, n_rep, echo))
   }
 
 }
