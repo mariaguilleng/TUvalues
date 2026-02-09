@@ -10,8 +10,6 @@
 #' @return The vertices of the core
 #'
 #' @importFrom utils combn
-#'
-#' @export
 
 core_exact <- function(characteristic_func, n_players = 0) {
 

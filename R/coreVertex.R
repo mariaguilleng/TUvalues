@@ -12,6 +12,8 @@
 #' based on Camacho et al. (2025).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
+#' @param echo Only used if \code{method} is \code{appro}. Show progress of the
+#' approximated calculation.
 #'
 #' @return The vertices of the core if it exists.
 #'

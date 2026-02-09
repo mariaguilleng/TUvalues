@@ -4,7 +4,7 @@
 \alias{core_appro}
 \title{Approximated core of the game}
 \usage{
-core_appro(characteristic_func, n_players = 0, n_rep = 1000, echo)
+core_appro(characteristic_func, n_players = 0, n_rep = 1000, echo = TRUE)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -15,8 +15,7 @@ The number of players in the game.}
 
 \item{n_rep}{The number of iterations to perform in the algorithm.}
 
-\item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
-approximated calculation.}
+\item{echo}{Show progress of the calculation.}
 }
 \value{
 The vertices of the estimated core
