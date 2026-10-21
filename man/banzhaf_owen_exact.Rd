@@ -19,5 +19,5 @@ players}
 The Banzhaf Index for each player
 }
 \description{
-Calculate the approximated Banzhaf-Owen value
+Calculate the exact Banzhaf-Owen value
 }

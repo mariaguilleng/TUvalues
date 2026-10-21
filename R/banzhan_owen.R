@@ -35,25 +35,16 @@
 banzhaf_owen <- function(characteristic_func, union, n_players = 0, method = "exact",
                          n_rep = 10000, replace = TRUE, echo = TRUE) {
 
-  if (! method %in% c("exact", "appro")) {
-    stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
-  }
-
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
+  check_method(method)
+  n_players <- check_game(characteristic_func, n_players)
+  union <- check_union(union, n_players)
 
   if (method == "exact") {
-    if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
     return(banzhaf_owen_exact(characteristic_func, union, n_players))
   } else {
-    if (n_rep < 1) {
-      stop("Invalid number of iterations specified. n_rep must be greater than 0.")
-    } else if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
+    n_rep <- check_n_rep(n_rep)
+    check_flag(replace, "replace")
+    check_flag(echo, "echo")
     return(banzhaf_owen_appro(characteristic_func, union, n_players, n_rep, replace, echo))
   }
 

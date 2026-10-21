@@ -43,25 +43,14 @@
 shapley <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 10000,
                     echo = TRUE){
 
-  if (! method %in% c("exact", "appro")) {
-    stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
-  }
+  check_method(method)
+  n_players <- check_game(characteristic_func, n_players)
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
-
-  if (method == "exact") { # exact
-    if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
+  if (method == "exact") {
     return(shapley_exact(characteristic_func, n_players))
   } else {
-    if (n_rep < 1) { #appro
-      stop("Invalid number of iterations specified. n_rep must be greater than 0.")
-    } else if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
+    n_rep <- check_n_rep(n_rep)
+    check_flag(echo, "echo")
     return(shapley_appro(characteristic_func, n_players, n_rep, echo))
   }
 

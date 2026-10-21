@@ -14,6 +14,11 @@
 #' iterations to perform in the approximated calculation.
 #' @param echo Only used if \code{method} is \code{appro}. Show progress of the
 #' approximated calculation.
+#' @param arithmetic Only used if \code{method} is \code{exact}. Arithmetic used
+#' in the vertex enumeration: \code{"double"} (floating point) or
+#' \code{"rational"} (exact rational arithmetic).
+#' @param tol Only used if \code{method} is \code{exact}. Positive tolerance
+#' used in floating point comparisons.
 #'
 #' @return The centroid of the core if it exists.
 #'
@@ -46,27 +51,19 @@
 #' @export
 
 centroid <- function(characteristic_func, n_players = 0, method = "exact",
-                     n_rep = 1000, echo = TRUE){
+                     n_rep = 1000, echo = TRUE,
+                     arithmetic = c("double", "rational"), tol = 1e-10){
 
-  if (! method %in% c("exact", "appro")) {
-    stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\" for the approximation.")
-  }
+  check_method(method)
+  n_players <- check_game(characteristic_func, n_players, min_players = 2L)
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
-
-  if (method == "exact") { # exact
-    if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
-    core <- core_exact(characteristic_func, n_players)
+  if (method == "exact") {
+    arithmetic <- match.arg(arithmetic)
+    check_tol(tol)
+    core <- core_exact(characteristic_func, n_players, arithmetic, tol)
   } else {
-    if (n_rep < 1) { #appro
-      stop("Invalid number of iterations specified. n_rep must be greater than 0.")
-    } else if (is.function(characteristic_func) && n_players < 2) {
-      stop("Invalid number of players specified. n_players must be greater than 1.")
-    }
+    n_rep <- check_n_rep(n_rep)
+    check_flag(echo, "echo")
     core <- core_appro(characteristic_func, n_players, n_rep, echo)
   }
 

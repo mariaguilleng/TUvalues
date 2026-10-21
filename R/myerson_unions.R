@@ -38,63 +38,23 @@
 myerson_unions <- function(characteristic_func, n_players = 0, unions,
                            graph_edges,  method = "exact", n_rep = 10000, echo = TRUE){
 
-  if (! method %in% c("exact", "appro")) {
-    stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\"
-         for the approximation.")
+  check_method(method)
+  n_players <- check_game(characteristic_func, n_players)
+  unions <- check_union(unions, n_players, "unions")
+  graph_edges <- check_graph_edges(graph_edges, n_players)
+  if (method == "appro") {
+    n_rep <- check_n_rep(n_rep)
+    check_flag(echo, "echo")
   }
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
+  # Graph-restricted game
+  game <- myerson_graph_game(characteristic_func, graph_edges, n_players, method)
 
-  if (is.function(characteristic_func) && n_players < 2) {
-    stop("Invalid number of players specified. n_players must be greater than 1.")
-  }
-
-  if (method == "appro" & n_rep < 1) {
-    stop("Invalid number of iterations specified. n_rep must be greater than 0.")
-  }
-
-  if (is.vector(characteristic_func)) {
-
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func),2)
-    }
-    # get coalitions
-    coa_set <- coalitions(n_players)[[2]]
-  }
-
-  # Adjacency Matrix from edges
-  G_adj <- get_adj_matrix(n_players, graph_edges)
-
-  # Calculate Graph Characteristic Function
-  characteristic_func_graph <- function(coalition) {
-    if (length(coalition) == 0) {
-      return(0)
-    }
-    components <- get_connected_components(coalition, G_adj, n_players)
-    v_s <- 0
-    for (comp in components) {
-      #browser()
-      if (is.function(characteristic_func)) {
-        v_s <- v_s + characteristic_func(comp)
-      } else {
-        comp_string <-  toString(comp)
-        v_s <- v_s + characteristic_func[which(coa_set == comp_string)]
-      }
-    }
-    return(v_s)
-  }
-
-
-  # Calculate Shapley value using the modified characteristic function
+  # Owen value of the graph-restricted game
   if (method == "exact") {
-    owen_value <- owen_exact(characteristic_func_graph, unions, n_players)
+    owen_value <- owen_exact(game$characteristic_func, unions, game$n_players)
   } else {
-    owen_value <- owen_appro(characteristic_func_graph, unions, n_players, n_rep, echo)
+    owen_value <- owen_appro(game$characteristic_func, unions, game$n_players, n_rep, echo)
   }
 
   return(owen_value)

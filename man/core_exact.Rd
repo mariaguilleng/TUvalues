@@ -4,7 +4,12 @@
 \alias{core_exact}
 \title{Exact core of the game}
 \usage{
-core_exact(characteristic_func, n_players = 0)
+core_exact(
+  characteristic_func,
+  n_players = 0,
+  arithmetic = "double",
+  tol = 1e-10
+)
 }
 \arguments{
 \item{characteristic_func}{The valued function defined on the subsets of the number
@@ -12,10 +17,20 @@ of players.}
 
 \item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
+
+\item{arithmetic}{Arithmetic used in the polyhedral computations:
+\code{"double"} (floating point) or \code{"rational"} (exact rational
+arithmetic; only the final vertices are converted to doubles).}
+
+\item{tol}{Positive tolerance used to compare values in floating point
+arithmetic and to clean values close to zero.}
 }
 \value{
 The vertices of the core
 }
 \description{
-Calculate the vertices of core of the game.
+Calculate the vertices of core of the game. The vertices are
+enumerated with the double-description method of cddlib (package
+\code{rcdd}) in dimension \code{n_players - 1}, after reducing the problem
+with the individual lower bounds.
 }

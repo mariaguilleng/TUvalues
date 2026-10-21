@@ -32,7 +32,7 @@
 #'    return(0)
 #'  }
 #' }
-#' union <- list(1:4,5:n)
+#' union <- list(1:2,3)
 #' equal_surplus_division_unions(v,union,n,type = 1)
 #'
 #' @examples
@@ -44,28 +44,15 @@
 
 equal_surplus_division_unions <- function(characteristic_func, union, n_players = 0, type = 1) {
 
-  if (type %in% c(1,2,3) == FALSE) {
-    stop("Invalid type specified. Type must be either 1, 3 or 5.")
+  if (!is.numeric(type) || length(type) != 1L || !type %in% c(1, 2, 3)) {
+    stop("Invalid type specified. Type must be either 1, 2 or 3.")
   }
+  n_players <- check_game(characteristic_func, n_players)
+  union <- check_union(union, n_players)
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
+  if (!is.function(characteristic_func)) {
 
-  if (is.function(characteristic_func) && n_players < 2) {
-    stop("Invalid number of players specified. n_players must be greater than 1.")
-  }
-
-  if (is.vector(characteristic_func)) {
-
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func),2)
-    }
-    #characteristic_func <- characteristic_func[-1]
-
+    characteristic_func <- game_values(characteristic_func)
     esd_value <- rep(0, n_players)
     coa_set <- coalitions(n_players)[[2]]
     names(characteristic_func) <- coa_set
@@ -107,12 +94,8 @@ equal_surplus_division_unions <- function(characteristic_func, union, n_players 
     }
 
 
-  } else if (is.function(characteristic_func)) {
+  } else {
 
-    if (n_players < 2) {
-      stop("Invalid numer of player specified. n_players must be greater
-             than 1.")
-    }
     esd_value <- rep(0, n_players)
     v_grand <- characteristic_func(seq(n_players))
     num_unions <- length(union)
@@ -147,8 +130,6 @@ equal_surplus_division_unions <- function(characteristic_func, union, n_players 
       }
     }
 
-  } else {
-    stop("Invalid characteristic_func provided.")
   }
 
   names(esd_value) <- seq(n_players)

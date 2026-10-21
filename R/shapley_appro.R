@@ -20,60 +20,78 @@
 
 shapley_appro <- function(characteristic_func,n_players,n_rep, echo){
 
-  if (is.vector(characteristic_func)) {
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func+1),2)
-    }
-    # get coalitions
-    coa_set <- coalitions(n_players)[[2]]
+  is_fun <- is.function(characteristic_func)
+  n_rep <- as.integer(n_rep)
+  if (is_fun) {
+    n_players <- as.integer(n_players)
+  } else {
+    values <- game_values(characteristic_func)
+    n_players <- as.integer(round(log2(length(values))))
   }
 
+  if (!is_fun) {
+    # Convert the coalitions() order to binary-mask order
+    k <- 0L
+    key <- 0L
+    for (i in seq_len(n_players)) {
+      k <- c(k, k + 1L)
+      key <- c(2L * key, 2L * key + 1L)
+    }
+    ord <- order(k, -key, method = "radix")
+    v_binary <- numeric(2^n_players)
+    v_binary[ord] <- values
+    rm(values, ord, key, k)
+    player_bit <- 2^(seq_len(n_players) - 1L)
+  }
 
-  # init progress bar
+  shapley_value <- numeric(n_players)
+  positions <- seq_len(n_players)
   if (echo) {
     pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+    on.exit(close(pb), add = TRUE)
+    progress_step <- max(1, ceiling(n_rep / 100))
+    next_progress <- progress_step
   }
 
-  shapley_value <- rep(0, n_players)
-  for (rep in 1:n_rep) {
-
-    # Update the progress bar
-    if (echo) {
-      setTxtProgressBar(pb, rep)
-    }
-
-    # O in pi(N) with probability 1/n!
-    perm <- sample(1:n_players)
-
-    for (i in 1:n_players) {
-
-      if (is.function(characteristic_func)) {
-        # Get v(Pre_i(O) U {i})
-        v_pre_perm_player <- characteristic_func(predecessor(perm, i, TRUE))
-        # Get v(Pre_i(O))
-        v_pre_perm_noplayer <- characteristic_func(predecessor(perm, i, FALSE))
-      } else {
-        # Get v(Pre_i(O) U {i})
-        pre_perm_player_set <- toString(predecessor(perm, i, TRUE))
-        v_pre_perm_player <- characteristic_func[which(coa_set == pre_perm_player_set)]
-        # Get v(Pre_i(O))
-        pre_perm_player_set <- toString(predecessor(perm, i, FALSE))
-        v_pre_perm_noplayer <- characteristic_func[which(coa_set == pre_perm_player_set)]
+  if (is_fun) {
+    empty_value <- characteristic_func(integer(0))
+    for (rep in seq_len(n_rep)) {
+      # O in pi(N) with probability 1/n!
+      perm <- sample.int(n_players)
+      member <- logical(n_players)
+      previous_value <- empty_value
+      for (pos in positions) {
+        player <- perm[pos]
+        member[player] <- TRUE
+        # v(Pre_i(O) U {i}), coalition given in increasing order
+        current_value <- characteristic_func(which(member))
+        shapley_value[player] <-
+          shapley_value[player] + current_value - previous_value
+        previous_value <- current_value
       }
+      if (echo && (rep >= next_progress || rep == n_rep)) {
+        setTxtProgressBar(pb, rep)
+        next_progress <- next_progress + progress_step
+      }
+    }
 
-      # x_i = v(Pre_i(O) U {i}) - v(Pre_i(O))
-      x_perm_player <- v_pre_perm_player - v_pre_perm_noplayer
-      # sh_i <- sh_i + x_i
-      shapley_value[i] <- shapley_value[i] + x_perm_player
+  } else {
+    empty_value <- v_binary[1L]
+    for (rep in seq_len(n_rep)) {
+      # O in pi(N) with probability 1/n!
+      perm <- sample.int(n_players)
+      current_values <- v_binary[cumsum(player_bit[perm]) + 1L]
+      previous_values <- c(empty_value, current_values[-n_players])
+      shapley_value[perm] <- shapley_value[perm] + current_values - previous_values
+      if (echo && (rep >= next_progress || rep == n_rep)) {
+        setTxtProgressBar(pb, rep)
+        next_progress <- next_progress + progress_step
+      }
     }
   }
-  if (echo) {
-    close(pb)
-  }
-  shapley_value <- shapley_value/n_rep
+
+  shapley_value <- shapley_value / n_rep
+  names(shapley_value) <- seq_len(n_players)
   return(shapley_value)
 
 }

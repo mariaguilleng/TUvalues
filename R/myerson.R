@@ -47,62 +47,22 @@
 myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "exact",
                     n_rep = 10000, echo = TRUE){
 
-  if (! method %in% c("exact", "appro")) {
-    stop("Invalid methos specified\n Use \"exact\" for the exact value or \"appro\"
-         for the approximation.")
+  check_method(method)
+  n_players <- check_game(characteristic_func, n_players)
+  graph_edges <- check_graph_edges(graph_edges, n_players)
+  if (method == "appro") {
+    n_rep <- check_n_rep(n_rep)
+    check_flag(echo, "echo")
   }
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
+  # Graph-restricted game
+  game <- myerson_graph_game(characteristic_func, graph_edges, n_players, method)
 
-  if (is.function(characteristic_func) && n_players < 2) {
-    stop("Invalid number of players specified. n_players must be greater than 1.")
-  }
-
-  if (method == "appro" & n_rep < 1) {
-    stop("Invalid number of iterations specified. n_rep must be greater than 0.")
-  }
-
-  if (is.vector(characteristic_func)) {
-
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func),2)
-    }
-    # get coalitions
-    coa_set <- coalitions(n_players)[[2]]
-  }
-
-  # Adjacency Matrix from edges
-  G_adj <- get_adj_matrix(n_players, graph_edges)
-
-  # Calculate Graph Characteristic Function
-  characteristic_func_graph <- function(coalition) {
-    if (length(coalition) == 0) {
-      return(0)
-    }
-    components <- get_connected_components(coalition, G_adj, n_players)
-    v_s <- 0
-    for (comp in components) {
-      #browser()
-      if (is.function(characteristic_func)) {
-        v_s <- v_s + characteristic_func(comp)
-      } else {
-        comp_string <-  toString(comp)
-        v_s <- v_s + characteristic_func[which(coa_set == comp_string)]
-      }
-    }
-    return(v_s)
-  }
-
-  # Calculate Shapley value using the modified characteristic function
+  # Myerson value = Shapley value of the graph-restricted game
   if (method == "exact") {
-    shapley_value <- shapley_exact(characteristic_func_graph, n_players)
+    shapley_value <- shapley_exact(game$characteristic_func, game$n_players)
   } else {
-    shapley_value <- shapley_appro(characteristic_func_graph, n_players, n_rep, echo)
+    shapley_value <- shapley_appro(game$characteristic_func, game$n_players, n_rep, echo)
   }
 
   return(shapley_value)
@@ -110,23 +70,150 @@ myerson <- function(characteristic_func, graph_edges, n_players = 0, method = "e
 }
 
 
+# Graph-restricted game v_G(S) = sum of v(C) over the connected components C
+# of S in the communication graph.
+# With method "exact" it is returned as a vector in the coalitions() order.
+# With method "appro" it is returned as a function that is evaluated (and
+# cached) only on the coalitions visited by the sampling.
+# With more than 30 players (only possible for a function) it is returned,
+# for both methods, as a function evaluated through the connected components.
+# The empty coalition is assumed to have value 0.
+# The arguments are assumed to be checked (graph_edges as a list of pairs).
+myerson_graph_game <- function(characteristic_func, graph_edges, n_players, method) {
+
+  is_fun <- is.function(characteristic_func)
+  n <- n_players
+  if (!is_fun) {
+    values <- game_values(characteristic_func)
+    values[1L] <- 0
+  }
+
+  # Bit masks are limited to 30 players. Larger games (only possible with a
+  # function) use explicit connected components and are not tabulated.
+  if (n > 30L) {
+    G_adj <- get_adj_matrix(n, graph_edges)
+    characteristic_func_graph <- function(coalition) {
+      if (length(coalition) == 0) {
+        return(0)
+      }
+      v_s <- 0
+      for (comp in get_connected_components(coalition, G_adj, n)) {
+        v_s <- v_s + characteristic_func(comp)
+      }
+      return(v_s)
+    }
+    return(list(characteristic_func = characteristic_func_graph, n_players = n))
+  }
+
+  bits <- as.integer(2^(seq_len(n) - 1L))
+
+  # coalitions() orders coalitions by cardinality and, within each
+  # cardinality, in combn() lexicographic order. Reverse-bit keys reproduce
+  # that order from binary masks (player 1 is the least significant bit).
+  sizes <- 0L
+  key <- 0L
+  for (i in seq_len(n)) {
+    sizes <- c(sizes, sizes + 1L)
+    key <- c(2L * key, 2L * key + 1L)
+  }
+  ord <- order(sizes, -key, method = "radix")
+  rm(sizes, key)
+
+  if (!is_fun) {
+    v_binary <- numeric(2^n)
+    v_binary[ord] <- values
+    rm(values)
+    get_value <- function(mask) v_binary[mask + 1L]
+  } else {
+    get_value <- function(mask) {
+      value <- characteristic_func(which(bitwAnd(mask, bits) != 0L))
+      if (!is.numeric(value) || is.complex(value) ||
+          length(value) != 1L || !is.finite(value)) {
+        stop("characteristic_func must return one finite real numeric value.")
+      }
+      as.numeric(value)
+    }
+  }
+
+  # Adjacency represented as bit masks
+  adjacency <- integer(n)
+  for (edge in graph_edges) {
+    a <- as.integer(edge[1L])
+    b <- as.integer(edge[2L])
+    adjacency[a] <- bitwOr(adjacency[a], bits[b])
+    adjacency[b] <- bitwOr(adjacency[b], bits[a])
+  }
+
+  # Connected component of 'mask' containing its smallest player
+  first_component <- function(mask) {
+    pending <- bitwAnd(mask, -mask)
+    component <- pending
+    while (pending != 0L) {
+      bit <- bitwAnd(pending, -pending)
+      pending <- bitwXor(pending, bit)
+      player <- match(bit, bits)
+      fresh <- bitwAnd(bitwAnd(adjacency[player], mask), bitwNot(component))
+      component <- bitwOr(component, fresh)
+      pending <- bitwOr(pending, fresh)
+    }
+    component
+  }
+
+  if (method == "exact") {
+    # Restricted values for every coalition, in binary-mask order.
+    # component and rest are smaller masks, already computed.
+    count <- 2^n - 1L
+    restricted <- numeric(count + 1L)
+    for (mask in seq_len(count)) {
+      component <- first_component(mask)
+      rest <- bitwXor(mask, component)
+      restricted[mask + 1L] <- if (rest == 0L) {
+        get_value(mask)
+      } else {
+        restricted[component + 1L] + restricted[rest + 1L]
+      }
+    }
+    if (any(!is.finite(restricted))) stop("Overflow in restricted-game values.")
+    return(list(characteristic_func = restricted[ord], n_players = n))
+  }
+
+  # Sparse cache: only the coalitions reached by the sampling are evaluated
+  cache <- new.env(hash = TRUE, parent = emptyenv())
+  assign("0", 0, envir = cache)
+  restricted_value <- function(mask) {
+    key <- as.character(mask)
+    known <- cache[[key]]
+    if (!is.null(known)) return(known)
+    component <- first_component(mask)
+    rest <- bitwXor(mask, component)
+    value <- if (rest == 0L) {
+      get_value(mask)
+    } else {
+      restricted_value(component) + restricted_value(rest)
+    }
+    if (!is.finite(value)) stop("Overflow in restricted-game values.")
+    cache[[key]] <- value
+    value
+  }
+  characteristic_func_graph <- function(coalition) {
+    restricted_value(as.integer(sum(bits[coalition])))
+  }
+
+  return(list(characteristic_func = characteristic_func_graph, n_players = n))
+}
+
+
 # Build Adjacency Matrix (G) from edges
 get_adj_matrix <- function(n_players, graph_edges) {
 
   G_adj <-  matrix(0, nrow = n_players, ncol = n_players)
-  if (length(graph_edges) > 0) {
-    for (edge in graph_edges) {
-      if (length(edge) != 2) {
-        stop("Invalid edges provided. Each edge must connect two players.
-               Error in edge: ", paste(edge, collapse = ", "))
-      }
-      p1 <- edge[1]
-      p2 <- edge[2]
-      G_adj[p1, p2] <- 1
-      G_adj[p2, p1] <- 1
-    }
-    return(G_adj)
+  for (edge in graph_edges) {
+    p1 <- edge[1]
+    p2 <- edge[2]
+    G_adj[p1, p2] <- 1
+    G_adj[p2, p1] <- 1
   }
+  return(G_adj)
 }
 
 

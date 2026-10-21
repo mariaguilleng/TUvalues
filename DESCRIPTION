@@ -2,7 +2,7 @@ Package: TUvalues
 Type: Package
 Title: Tools for Calculating Allocations in Game Theory using Exact and
         Approximated Methods
-Version: 1.1.1
+Version: 1.2
 Authors@R: c(
     person(given = c("Maria","D."), 
            family = "Guillen", 
@@ -13,7 +13,12 @@ Authors@R: c(
            family = "Gonçalves", 
            role = c("aut"),
            email = "jgoncalves@umh.es",
-           comment = c(ORCID = "0000-0002-0867-0004"))
+           comment = c(ORCID = "0000-0002-0867-0004")),
+    person(given = "Jesús", 
+           family = "Camacho", 
+           role = c("aut"),
+           email = "j.camacho@umh.es",
+           comment = c(ORCID = "0000-0002-2527-7351"))
     )
 Description: The main objective of cooperative Transferable-Utility games (TU-games) 
   is to allocate a good among the agents involved. The package implements major 
@@ -25,9 +30,9 @@ Description: The main objective of cooperative Transferable-Utility games (TU-ga
   algorithms and linear approximation methods based on sampling, enabling the 
   analysis of large-scale games. Additionally, it supports core set-based 
   solutions, allowing computation of the vertices and the centroid of the core.
-License: AGPL (>= 3)
+License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 URL: https://github.com/mariaguilleng/TUvalues
 BugReports: https://github.com/mariaguilleng/TUvalues/issues
-Imports: utils, gtools, ROI, ROI.plugin.glpk
+Imports: utils, stats, ROI, ROI.plugin.glpk, rcdd

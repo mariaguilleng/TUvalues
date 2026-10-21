@@ -33,37 +33,19 @@
 
 egalitarian_unions <- function(characteristic_func, union, n_players = 0) {
 
-  egalitarian_value <- rep(0, n_players)
-  if (is.vector(characteristic_func)) {
+  n_players <- check_game(characteristic_func, n_players)
+  union <- check_union(union, n_players)
 
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)) {
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func),2)
-    }
-
-    num_unions <- length(union)
-    v_grand <- characteristic_func[length(characteristic_func)]
-    for (block in union) {
-      egalitarian_value[block] <- v_grand / (length(block) * num_unions)
-    }
-
-  } else if (is.function(characteristic_func)) {
-
-    if (n_players < 2) {
-      stop("Invalid numer of player specified. n_players must be greater
-             than 1.")
-    }
-
-    num_unions <- length(union)
+  if (is.function(characteristic_func)) {
     v_grand <- characteristic_func(seq(n_players))
-    for (block in union) {
-      egalitarian_value[block] <- v_grand / (length(block) * num_unions)
-    }
-
   } else {
-    stop("Invalid characteristic_func provided.")
+    v_grand <- characteristic_func[length(characteristic_func)]
+  }
+
+  egalitarian_value <- rep(0, n_players)
+  num_unions <- length(union)
+  for (block in union) {
+    egalitarian_value[block] <- v_grand / (length(block) * num_unions)
   }
 
   names(egalitarian_value) <- seq(n_players)

@@ -9,7 +9,9 @@ coreVertex(
   n_players = 0,
   method = "exact",
   n_rep = 1000,
-  echo = TRUE
+  echo = TRUE,
+  arithmetic = c("double", "rational"),
+  tol = 1e-10
 )
 }
 \arguments{
@@ -28,6 +30,13 @@ iterations to perform in the approximated calculation.}
 
 \item{echo}{Only used if \code{method} is \code{appro}. Show progress of the
 approximated calculation.}
+
+\item{arithmetic}{Only used if \code{method} is \code{exact}. Arithmetic used
+in the vertex enumeration: \code{"double"} (floating point) or
+\code{"rational"} (exact rational arithmetic).}
+
+\item{tol}{Only used if \code{method} is \code{exact}. Positive tolerance
+used in floating point comparisons.}
 }
 \value{
 The vertices of the core if it exists.

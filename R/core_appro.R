@@ -23,93 +23,76 @@
 
 core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000, echo = TRUE){
 
-  if(!is.vector(characteristic_func) && !is.function(characteristic_func)) {
-    stop("Invalid characteristic_func provided.")
-  }
-
-  if (is.function(characteristic_func) && n_players < 2) {
-    stop("Invalid number of players specified. n_players must be greater than 1.")
-  }
-
-  if (is.vector(characteristic_func)) {
-    # get number of players
-    n_players <- log(length(characteristic_func), 2)
-    if (n_players != round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players <- log(length(characteristic_func), 2)
-    }
-    characteristic_func <- characteristic_func[-1]
-  }
+  # Tolerance used to remove repeated vertices
+  tol <- 1e-10
 
   if (is.function(characteristic_func)) {
+    n <- as.integer(n_players)
     # get characteristic function values for every coalition
-    results_by_size <- lapply(X = 1:n_players, FUN = function(m) {
-      return(combn(x = 1:n_players, m = m, FUN = characteristic_func))
-    })
-    characteristic_func <- unlist(results_by_size)
+    values <- unlist(lapply(seq_len(n), function(size) {
+      combn(seq_len(n), size, FUN = characteristic_func)
+    }), use.names = FALSE)
+    if (!is.numeric(values) || is.complex(values) || length(values) != 2^n - 1 ||
+        any(!is.finite(values))) {
+      stop("characteristic_func must return one finite real numeric value for each coalition.")
+    }
+  } else {
+    # The empty coalition is assumed to have value 0
+    values <- game_values(characteristic_func)[-1L]
+    n <- as.integer(round(log2(length(values) + 1)))
   }
 
-  # get coalition matrix
-  # Assumes 'coalitions' function exists in your package environment
-  coa_matrix <- as.matrix(coalitions(n_players)$Binary)
+  # Create the ROI model once; only the objective changes between replications.
+  # Core constraints: Ax >= v and the efficiency constraint: Ax_N = v(N)
+  A <- as.matrix(coalitions(n)$Binary)[-1L, , drop = FALSE]
+  directions <- c(rep(">=", length(values) - 1L), "==")
+  op <- ROI::OP(
+    objective = ROI::L_objective(numeric(n)),
+    constraints = ROI::L_constraint(
+      L = A,
+      dir = directions,
+      rhs = values
+    ),
+    bounds = ROI::V_bound(li = seq_len(n), lb = rep(0, n)),
+    maximum = FALSE # Minimizing to find a boundary point (vertex)
+  )
 
-  # Prepare constraint directions: >= for all sub-coalitions, == for grand coalition
-  n_restrictions <- length(characteristic_func)
-  constr_directions <- c(rep(">=", n_restrictions - 1), "==")
-
-  # init progress bar
+  solutions <- vector("list", n_rep)
+  count <- 0L
   if (echo) {
     pb <- txtProgressBar(min = 0, max = n_rep, style = 3)
+    on.exit(close(pb), add = TRUE)
+    progress_step <- max(1, ceiling(n_rep / 100))
+    next_progress <- progress_step
   }
 
-  solutions <- list()
-  for (rep in seq(n_rep)) {
-
-    # update progress bar
-    if (echo) {
-      setTxtProgressBar(pb, rep)
-    }
-
+  for (rep in seq_len(n_rep)) {
     # Get a random vector uniformly distributed on the unit sphere
-    direction <- random_vector_sphere(n_players)
-
-    # Create the ROI model
-    # We define the core constraints: Ax >= v and the efficiency constraint: Ax_N = v(N)
-    op <- ROI::OP(
-      objective = ROI::L_objective(direction),
-      constraints = ROI::L_constraint(
-        L = coa_matrix[-1, ],
-        dir = constr_directions,
-        rhs = characteristic_func
-      ),
-      bounds = ROI::V_bound(li = 1:n_players, lb = rep(0, n_players)),
-      maximum = FALSE # Minimizing to find a boundary point (vertex)
-    )
-
-    # Solve the model using a standard plugin like 'glpk'
-    # Ensure ROI.plugin.glpk is installed
+    direction <- random_vector_sphere(n)
+    ROI::objective(op) <- ROI::L_objective(direction)
     res <- ROI::ROI_solve(op, solver = "glpk")
-
     # Save the solution if it is optimal
     if (res$status$code == 0) {
-      solutions[[length(solutions) + 1]] <- ROI::solution(res)
+      count <- count + 1L
+      solutions[[count]] <- ROI::solution(res)
+    }
+    if (echo && (rep >= next_progress || rep == n_rep)) {
+      setTxtProgressBar(pb, rep)
+      next_progress <- next_progress + progress_step
     }
   }
 
-  if (echo) {
-    close(pb)
-  }
-
-  if (length(solutions) == 0) {
+  if (count == 0L) {
     warning("No valid solutions found. The core may be empty.")
     return(NULL)
   }
 
-  # Format of the output
-  solutions <- unique(solutions)
-  solutions_matrix <- do.call(rbind, solutions)
-  colnames(solutions_matrix) <- seq(n_players)
-  return(solutions_matrix)
+  # Format of the output, removing repeated vertices up to tol
+  result <- do.call(rbind, solutions[seq_len(count)])
+  keep <- !duplicated(as.data.frame(round(result / tol)))
+  result <- result[keep, , drop = FALSE]
+  colnames(result) <- seq_len(n)
+  return(result)
 }
 
 # Generate Random vector on the unit sphere

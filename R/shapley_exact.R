@@ -10,41 +10,54 @@
 
 shapley_exact <- function(characteristic_func, n_players){
 
-  if (is.vector(characteristic_func)) {
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func),2)
-    }
-    characteristic_func <- characteristic_func[-1]
+  # Function input: evaluate and accumulate by blocks of coalitions
+  if (is.function(characteristic_func)) {
+    return(exact_by_blocks(characteristic_func, n_players, "shapley"))
   }
 
-  # get coalitions
-  coa_binary<-coalitions(n_players)[[1]][-1,]
+  values <- game_values(characteristic_func)
+  # The empty coalition is assumed to have value 0
+  values[1L] <- 0
+  n <- as.integer(round(log2(length(values))))
+  m <- 2^n
 
-  # calculate Shapley value
-  coa_aux<-coa_binary
-  factorial_n <- factorial(n_players)
-  for (j in 1:(2^n_players-1)){
-    for (i in 1:n_players){
-      s <- coalition_binary_to_numeric(coa_binary[j,]) # Current coalition
-      s_players <- length(s) # Number of players of the coalition
-      if (coa_aux[j,i]==0){
-        if (is.function(characteristic_func)) {
-          coa_aux[j,i] <- -(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func(s)
-        } else {
-          coa_aux[j,i] <- -(factorial(s_players)*factorial(n_players-s_players-1))/factorial_n*characteristic_func[j]
-        }
-      } else {
-        if (is.function(characteristic_func)) {
-          coa_aux[j,i] <- (factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func(s)
-        } else {
-          coa_aux[j,i] <- (factorial(s_players-1)*factorial(n_players-s_players))/factorial_n*characteristic_func[j]
-        }
-      }
-    }
+  # Coalition sizes in binary order; player 1 is the least significant bit.
+  k <- 0L
+  for (i in seq_len(n)) k <- c(k, k + 1L)
+
+  # coalitions() orders coalitions by size and, within each size,
+  # according to the lexicographic order produced by combn().
+  # Reverse-bit keys reproduce that order from binary masks.
+  key <- 0L
+  for (i in seq_len(n)) {
+    key <- c(2L * key, 2L * key + 1L)
   }
-  shapley_value<-apply(coa_aux,2,sum)
+
+  ord <- order(k, -key, method = "radix")
+  rm(key)
+
+  # Put values in binary order.
+  v <- numeric(m)
+  v[ord] <- values
+  rm(values, ord)
+
+  w <- 1 / (n * choose(n - 1L, 0:(n - 1L)))
+  a <- c(0, w)[k + 1L]
+  b <- c(w, 0)[k + 1L]
+  offset <- sum(v * b)
+  z <- v * (a + b)
+  rm(v, a, b, k)
+
+  # Sum z over all coalitions containing each player, eliminating the highest
+  # remaining bit after each step. Total processed lengths form a geometric sum.
+  shapley_value <- numeric(n)
+  for (i in n:1L) {
+    half <- length(z) %/% 2L
+    idx <- seq_len(half)
+    right <- z[idx + half]
+    shapley_value[i] <- sum(right) - offset
+    if (i > 1L) z <- z[idx] + right
+  }
+  names(shapley_value) <- seq_len(n)
   return(shapley_value)
 }

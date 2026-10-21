@@ -10,50 +10,48 @@
 
 banzhaf_exact <- function(characteristic_func, n_players){
 
-  if (is.vector(characteristic_func)) {
-    # get number of players
-    n_players<-log(length(characteristic_func),2)
-    if (n_players!=round(n_players)){
-      characteristic_func <- c(0, characteristic_func)
-      n_players<-log(length(characteristic_func+1),2)
-    }
+  # Function input: evaluate and accumulate by blocks of coalitions
+  if (is.function(characteristic_func)) {
+    return(exact_by_blocks(characteristic_func, n_players, "banzhaf"))
   }
 
-  # get coalitions
-  coalition  <- coalitions(n_players)
-  coa_binary <- coalition[[1]]
-  coa_set <- coalition[[2]]
-  if (is.vector(characteristic_func)) {
-    coa_binary <- cbind(coa_binary, characteristic_func)
-  }
+  values <- game_values(characteristic_func)
+  n <- as.integer(round(log2(length(values))))
+  m <- 2^n
 
-  banzhaf_value<-rep(0,n_players)
-  for(i in 1:n_players){
-    if (is.vector(characteristic_func)) {
-      #Get all coalitions K where player i takes part
-      coa_player <- coa_binary[coa_binary[,i]==1,]
-      #Get all coalitions K \ {i}
-      coa_without_player <- coa_binary[coa_binary[,i]==0,]
-      # Get value
-      banzhaf_value[i] <- sum(coa_player[,"characteristic_func"]-coa_without_player[,"characteristic_func"])
-    } else { # is.function(characteristic_func)
-      #Get all coalitions K where player i takes part
-      coa_player <- coa_binary[coa_binary[,i]==1,]
-      coa_player <- apply(coa_player, 1, coalition_binary_to_numeric)
-      #Get all coalitions K \ {i}
-      coa_without_player <- coa_binary[coa_binary[,i]==0,]
-      coa_without_player <- apply(coa_without_player, 1, coalition_binary_to_numeric)
-      # Get value
-      banzhaf_value[i] <- sum(sapply(coa_player, characteristic_func)-sapply(coa_without_player, characteristic_func))
-    }
+  k <- 0L
+  for (i in seq_len(n)) k <- c(k, k + 1L)
 
+  # coalitions() orders coalitions first by cardinality and then
+  # lexicographically within each cardinality. The fast binary reduction
+  # used below requires coalition values in pure binary-mask order.
+  # ord gives, for every position in coalitions() order, the
+  # corresponding position in binary order.
+  key <- 0L
+  for (i in seq_len(n)) {
+    key <- c(2L * key, 2L * key + 1L)
   }
-  banzhafFactor <- 1/(2^(n_players-1))
-  banzhaf_value <- banzhafFactor*banzhaf_value
-  names(banzhaf_value) <- 1:n_players
+  ord <- order(k, -key, method = "radix")
+  rm(key)
+
+  v <- numeric(m)
+  v[ord] <- values - values[1L]
+  rm(values, ord, k)
+
+  total <- sum(v)
+  scale <- 2^(n - 1L)
+
+  z <- v
+  rm(v)
+  banzhaf_value <- numeric(n)
+  for (i in n:1L) {
+    half <- length(z) %/% 2L
+    idx <- seq_len(half)
+    right <- z[idx + half]
+    banzhaf_value[i] <- (2 * sum(right) - total) / scale
+    if (i > 1L) z <- z[idx] + right
+  }
+  names(banzhaf_value) <- seq_len(n)
   return(banzhaf_value)
 
 }
-
-
-

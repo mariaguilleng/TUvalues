@@ -44,7 +44,7 @@ v <- function(coalition) {
    return(0)
  }
 }
-union <- list(1:4,5:n)
+union <- list(1:2,3)
 equal_surplus_division_unions(v,union,n,type = 1)
 
 v <- c(1,1,2,1,2,2,2)
