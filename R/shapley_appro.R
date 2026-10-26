@@ -1,4 +1,5 @@
 #' @title Shapley value (approximation)
+#' @noRd
 #'
 #' @description Calculate the approximated Shapley value based on sampling using
 #' the algorithm proposed by Castro et al. (2009).

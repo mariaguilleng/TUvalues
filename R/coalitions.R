@@ -52,7 +52,3 @@ coalitions <- function(n_players){
   return(sol)
 
 }
-
-coalition_binary_to_numeric <- function(coalition_binary) {
-  return(which(coalition_binary == 1))
-}

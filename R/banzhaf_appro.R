@@ -1,4 +1,5 @@
 #' @title Banzhaf Index (approximated)
+#' @noRd
 #'
 #' @description Calculate the approximated Banzhaf Index based on sampling
 #'

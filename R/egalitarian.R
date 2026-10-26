@@ -29,7 +29,7 @@
 
 egalitarian <- function(characteristic_func, n_players = 0) {
 
-  n_players <- check_game(characteristic_func, n_players)
+  n_players <- validate_game(characteristic_func, n_players)
 
   if (is.function(characteristic_func)) {
     v_grand <- characteristic_func(seq(n_players))

@@ -1,4 +1,5 @@
 #' @title Shapley value (exact)
+#' @noRd
 #'
 #' @description Calculate the exact Shapley value
 #'

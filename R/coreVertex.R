@@ -54,16 +54,16 @@ coreVertex <- function(characteristic_func, n_players = 0, method = "exact",
                        n_rep = 1000, echo = TRUE,
                        arithmetic = c("double", "rational"), tol = 1e-10) {
 
-  check_method(method)
-  n_players <- check_game(characteristic_func, n_players, min_players = 2L)
+  validate_method(method)
+  n_players <- validate_game(characteristic_func, n_players, min_players = 2L)
 
   if (method == "exact") {
     arithmetic <- match.arg(arithmetic)
-    check_tol(tol)
+    validate_tol(tol)
     return(core_exact(characteristic_func, n_players, arithmetic, tol))
   } else {
-    n_rep <- check_n_rep(n_rep)
-    check_flag(echo, "echo")
+    n_rep <- validate_n_rep(n_rep)
+    validate_flag(echo, "echo")
     return(core_appro(characteristic_func, n_players, n_rep, echo))
   }
 

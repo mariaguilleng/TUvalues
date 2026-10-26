@@ -1,4 +1,5 @@
 #' @title Banzhaf-Owen Value
+#' @noRd
 #'
 #' @description Calculate the approximated Banzhaf-Owen value using the
 #' algorithm proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).

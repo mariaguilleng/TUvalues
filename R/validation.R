@@ -1,4 +1,4 @@
-# Common argument checks.
+# Common argument validation.
 # They are called by the interface functions (shapley, banzhaf, owen,
 # banzhaf_owen, myerson, myerson_unions, coreVertex, centroid) and by the
 # egalitarian functions. The internal *_exact and *_appro functions assume
@@ -10,7 +10,7 @@
 # order, without (length 2^n - 1) or with (length 2^n) the empty coalition.
 # A function requires n_players, which must be an integer greater than 1,
 # with no upper limit. Vectors are limited to 30 players.
-check_game <- function(characteristic_func, n_players, min_players = 1L) {
+validate_game <- function(characteristic_func, n_players, min_players = 1L) {
 
   if (is.function(characteristic_func)) {
     if (!is.numeric(n_players) || length(n_players) != 1L || is.na(n_players)) {
@@ -60,7 +60,7 @@ check_game <- function(characteristic_func, n_players, min_players = 1L) {
 
 
 # Check the method of calculation
-check_method <- function(method) {
+validate_method <- function(method) {
   if (!is.character(method) || length(method) != 1L ||
       !method %in% c("exact", "appro")) {
     stop("Invalid method specified.\n",
@@ -71,7 +71,7 @@ check_method <- function(method) {
 
 
 # Check the number of iterations and return it as an integer
-check_n_rep <- function(n_rep) {
+validate_n_rep <- function(n_rep) {
   if (!is.numeric(n_rep) || length(n_rep) != 1L || is.na(n_rep) || n_rep < 1) {
     stop("Invalid number of iterations specified. n_rep must be greater than 0.")
   }
@@ -83,7 +83,7 @@ check_n_rep <- function(n_rep) {
 
 
 # Check a logical flag (echo, replace)
-check_flag <- function(x, name) {
+validate_flag <- function(x, name) {
   if (!is.logical(x) || length(x) != 1L || is.na(x)) {
     stop(name, " must be TRUE or FALSE.")
   }
@@ -93,7 +93,7 @@ check_flag <- function(x, name) {
 
 # Check that the a priori unions form a partition of the players 1, ..., n.
 # Return the unions as a list of integer vectors.
-check_union <- function(union, n_players, name = "union") {
+validate_union <- function(union, n_players, name = "union") {
   if (!is.list(union) || length(union) < 1L) {
     stop("Invalid ", name, " provided. It must be a non-empty list of vectors of players.")
   }
@@ -118,7 +118,7 @@ check_union <- function(union, n_players, name = "union") {
 # Check the edges of the communication graph.
 # Accept a list of pairs, a two-column matrix or data.frame, or NULL.
 # Return a list of integer pairs.
-check_graph_edges <- function(graph_edges, n_players) {
+validate_graph_edges <- function(graph_edges, n_players) {
   if (is.null(graph_edges)) graph_edges <- list()
   if (is.data.frame(graph_edges)) graph_edges <- as.matrix(graph_edges)
   if (is.matrix(graph_edges)) {
@@ -142,7 +142,7 @@ check_graph_edges <- function(graph_edges, n_players) {
 
 
 # Check the tolerance of the exact core
-check_tol <- function(tol) {
+validate_tol <- function(tol) {
   if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
     stop("tol must be one positive finite numeric value.")
   }
@@ -157,4 +157,19 @@ game_values <- function(characteristic_func) {
   len <- length(values)
   if (len == 2^round(log2(len + 1)) - 1) values <- c(0, values)
   values
+}
+
+
+# Index in binary order (bit mask + 1) of every coalition in the coalitions()
+# order, that is, by cardinality and, within each cardinality, in combn()
+# lexicographic order. Player 1 is the least significant bit. Reverse-bit keys
+# reproduce the combn() order; doubles avoid any limit on the number of players.
+tu_order <- function(n) {
+  sizes <- 0L
+  key <- 0
+  for (i in seq_len(n)) {
+    sizes <- c(sizes, sizes + 1L)
+    key <- c(2 * key, 2 * key + 1)
+  }
+  order(sizes, -key, method = "radix")
 }

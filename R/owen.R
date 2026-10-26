@@ -44,15 +44,15 @@
 
 owen  <- function(characteristic_func, union, n_players = 0, method = "exact", n_rep = 10000, echo = TRUE){
 
-  check_method(method)
-  n_players <- check_game(characteristic_func, n_players)
-  union <- check_union(union, n_players)
+  validate_method(method)
+  n_players <- validate_game(characteristic_func, n_players)
+  union <- validate_union(union, n_players)
 
   if (method == "exact") {
     return(owen_exact(characteristic_func, union, n_players))
   } else {
-    n_rep <- check_n_rep(n_rep)
-    check_flag(echo, "echo")
+    n_rep <- validate_n_rep(n_rep)
+    validate_flag(echo, "echo")
     return(owen_appro(characteristic_func, union, n_players, n_rep, echo))
   }
 

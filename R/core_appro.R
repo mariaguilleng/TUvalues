@@ -1,4 +1,5 @@
 #' @title Approximated core of the game
+#' @noRd
 #'
 #' @description Calculate the vertices of the core of the game following
 #' Camacho et al. (2025)

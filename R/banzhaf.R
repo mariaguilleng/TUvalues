@@ -41,15 +41,15 @@
 banzhaf <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 10000,
                     replace = FALSE, echo = TRUE){
 
-  check_method(method)
-  n_players <- check_game(characteristic_func, n_players)
+  validate_method(method)
+  n_players <- validate_game(characteristic_func, n_players)
 
   if (method == "exact") {
     return(banzhaf_exact(characteristic_func, n_players))
   } else {
-    n_rep <- check_n_rep(n_rep)
-    check_flag(replace, "replace")
-    check_flag(echo, "echo")
+    n_rep <- validate_n_rep(n_rep)
+    validate_flag(replace, "replace")
+    validate_flag(echo, "echo")
     return(banzhaf_appro(characteristic_func, n_players, n_rep, replace, echo))
   }
 

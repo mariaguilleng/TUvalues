@@ -1,4 +1,5 @@
 #' @title Exact core of the game
+#' @noRd
 #'
 #' @description Calculate the vertices of core of the game. The vertices are
 #' enumerated with the double-description method of cddlib (package

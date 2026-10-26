@@ -1,4 +1,5 @@
 #' @title Owen value (exact)
+#' @noRd
 #'
 #' @description Calculate the exact Owen
 #'

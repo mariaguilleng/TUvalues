@@ -43,14 +43,14 @@
 shapley <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 10000,
                     echo = TRUE){
 
-  check_method(method)
-  n_players <- check_game(characteristic_func, n_players)
+  validate_method(method)
+  n_players <- validate_game(characteristic_func, n_players)
 
   if (method == "exact") {
     return(shapley_exact(characteristic_func, n_players))
   } else {
-    n_rep <- check_n_rep(n_rep)
-    check_flag(echo, "echo")
+    n_rep <- validate_n_rep(n_rep)
+    validate_flag(echo, "echo")
     return(shapley_appro(characteristic_func, n_players, n_rep, echo))
   }
 

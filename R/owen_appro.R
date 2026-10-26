@@ -1,4 +1,5 @@
 #' @title Owen value (approximation)
+#' @noRd
 #'
 #' @description Calculate the approximated Owen value based on sampling using
 #' the algorithm proposed by Saavedra-Nieves et al. (2018).

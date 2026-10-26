@@ -1,4 +1,5 @@
 #' @title Banzhaf-Owen Value
+#' @noRd
 #'
 #' @description Calculate the exact Banzhaf-Owen value
 #'

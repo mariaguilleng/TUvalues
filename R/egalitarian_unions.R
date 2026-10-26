@@ -33,8 +33,8 @@
 
 egalitarian_unions <- function(characteristic_func, union, n_players = 0) {
 
-  n_players <- check_game(characteristic_func, n_players)
-  union <- check_union(union, n_players)
+  n_players <- validate_game(characteristic_func, n_players)
+  union <- validate_union(union, n_players)
 
   if (is.function(characteristic_func)) {
     v_grand <- characteristic_func(seq(n_players))

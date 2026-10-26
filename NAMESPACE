@@ -3,6 +3,8 @@
 export(banzhaf)
 export(banzhaf_owen)
 export(centroid)
+export(check_core)
+export(check_myerson_stability)
 export(coalitions)
 export(coreVertex)
 export(egalitarian)

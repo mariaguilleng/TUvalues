@@ -47,8 +47,8 @@ equal_surplus_division_unions <- function(characteristic_func, union, n_players 
   if (!is.numeric(type) || length(type) != 1L || !type %in% c(1, 2, 3)) {
     stop("Invalid type specified. Type must be either 1, 2 or 3.")
   }
-  n_players <- check_game(characteristic_func, n_players)
-  union <- check_union(union, n_players)
+  n_players <- validate_game(characteristic_func, n_players)
+  union <- validate_union(union, n_players)
 
   if (!is.function(characteristic_func)) {
 

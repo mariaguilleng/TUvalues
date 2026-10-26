@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^versionesrapidasNuevo\.R$
+^checkcore\.R$
+^LICENSE\.md$

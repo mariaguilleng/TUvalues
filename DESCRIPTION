@@ -2,7 +2,7 @@ Package: TUvalues
 Type: Package
 Title: Tools for Calculating Allocations in Game Theory using Exact and
         Approximated Methods
-Version: 1.2
+Version: 1.3
 Authors@R: c(
     person(given = c("Maria","D."), 
            family = "Guillen", 

@@ -38,13 +38,13 @@
 myerson_unions <- function(characteristic_func, n_players = 0, unions,
                            graph_edges,  method = "exact", n_rep = 10000, echo = TRUE){
 
-  check_method(method)
-  n_players <- check_game(characteristic_func, n_players)
-  unions <- check_union(unions, n_players, "unions")
-  graph_edges <- check_graph_edges(graph_edges, n_players)
+  validate_method(method)
+  n_players <- validate_game(characteristic_func, n_players)
+  unions <- validate_union(unions, n_players, "unions")
+  graph_edges <- validate_graph_edges(graph_edges, n_players)
   if (method == "appro") {
-    n_rep <- check_n_rep(n_rep)
-    check_flag(echo, "echo")
+    n_rep <- validate_n_rep(n_rep)
+    validate_flag(echo, "echo")
   }
 
   # Graph-restricted game
