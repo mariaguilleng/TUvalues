@@ -17,3 +17,8 @@ sets) of the coalitions
 \description{
 Create all the possible coalitions given the number of players
 }
+\examples{
+# Order in which the values of a game given as a vector must be supplied
+coalitions(3)
+
+}

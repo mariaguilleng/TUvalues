@@ -10,6 +10,10 @@
 #'
 #' @importFrom utils combn
 #'
+#' @examples
+#' # Order in which the values of a game given as a vector must be supplied
+#' coalitions(3)
+#'
 #' @export
 
 coalitions <- function(n_players){

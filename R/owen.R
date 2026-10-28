@@ -3,11 +3,17 @@
 #' @description
 #' Calculate the Owen value
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players.
+#' @param characteristic_func The characteristic function of the game. It can be
+#' a numeric vector with the value of every coalition, in the order given by
+#' \code{\link{coalitions}}: of length \eqn{2^n - 1}, without the empty
+#' coalition (whose value is taken as 0), or of length \eqn{2^n}, with the
+#' empty coalition first. Vectors support up to 30 players. It can also be a
+#' function that receives a coalition (a vector of players) and returns its
+#' value; in that case there is no limit on the number of players.
 #' @param union List of vectors indicating the a priori unions between the
 #' players.
-#' @param n_players The number of players in the game.
+#' @param n_players Only used if \code{characteristic_func} is a \code{function}.
+#' The number of players in the game.
 #' @param method Method used to calculate the Owen value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
 #' calculation based on sampling proposed by Saavedra-Nieves et al. (2018).

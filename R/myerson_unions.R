@@ -3,23 +3,39 @@
 #' @description
 #' Calculate the Myerson value in a communication game with a priori unions.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players. It can be provided as a vector or as a function.
+#' @param characteristic_func The characteristic function of the game. It can be
+#' a numeric vector with the value of every coalition, in the order given by
+#' \code{\link{coalitions}}: of length \eqn{2^n - 1}, without the empty
+#' coalition (whose value is taken as 0), or of length \eqn{2^n}, with the
+#' empty coalition first. Vectors support up to 30 players. It can also be a
+#' function that receives a coalition (a vector of players) and returns its
+#' value; in that case there is no limit on the number of players.
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
 #' @param unions List of vectors indicating the a priori unions between the
 #' players.
-#' @param graph_edges Edges of the communication graph of the game. It must be
-#' a \code{list} of pairs indicating the connected players.
-#' @param method Method used to  calculate the Myerson value. Valid methods are:
+#' @param graph_edges Edges of the communication graph of the game: a
+#' \code{list} of pairs of players (for example \code{list(c(1, 2), c(2, 3))}),
+#' or a two-column matrix or data frame. Each edge must join two different
+#' players.
+#' @param method Method used to calculate the Myerson value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
-#' calculation based on sampling proposed.
+#' calculation, applying to the communication game the sampling procedure of the
+#' Owen value proposed by Saavedra-Nieves et al. (2018).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation.
 #' @param echo Only used if \code{method} is \code{appro}. Show progress of the
 #' approximated calculation.
 #'
 #' @return The Myerson value for each player.
+#'
+#' @references Myerson, R. B. (1977). Graphs and Cooperation in Games.
+#' Mathematics of Operations Research, 2(3), 225--229.
+#' \doi{10.1287/moor.2.3.225}
+#'
+#' Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
+#' Estimation of the Owen value based on sampling. In The mathematics of the uncertain:
+#' A tribute to Pedro Gil (pp. 347-356). Cham: Springer International Publishing.
 #'
 #' @examples
 #' v <- c(

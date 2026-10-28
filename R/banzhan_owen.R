@@ -3,18 +3,26 @@
 #' @description
 #' Calculate the Banzhaf-Owen value
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
+#' @param characteristic_func The characteristic function of the game. It can be
+#' a numeric vector with the value of every coalition, in the order given by
+#' \code{\link{coalitions}}: of length \eqn{2^n - 1}, without the empty
+#' coalition (whose value is taken as 0), or of length \eqn{2^n}, with the
+#' empty coalition first. Vectors support up to 30 players. It can also be a
+#' function that receives a coalition (a vector of players) and returns its
+#' value; in that case there is no limit on the number of players.
 #' @param union List of vectors indicating the a priori unions between the
 #' players
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
-#' @param method Method used to calculate the Owen value. Valid methods are:
+#' @param method Method used to calculate the Banzhaf-Owen value. Valid methods are:
 #' \code{exact} for the exact calculation or \code{appro} for approximated polynomial
 #' calculation based on sampling proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
 #' @param n_rep Only used if \code{method} is \code{appro}. The number of
 #' iterations to perform in the approximated calculation
-#' @param replace Should sampling be with replacement?
+#' @param replace Only used if \code{method} is \code{appro}. Should sampling
+#' be with replacement? Without replacement, \code{n_rep} is reduced, if
+#' necessary, to the number of different coalitions that can be sampled for
+#' each player.
 #' @param echo Only used if \code{method} is \code{appro}. Show progress of the
 #' approximated calculation.
 #'

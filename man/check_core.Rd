@@ -10,8 +10,13 @@ check_core(allocation, characteristic_func, details = FALSE)
 \item{allocation}{Numeric vector with the payoff of each player. Its length
 is the number of players of the game.}
 
-\item{characteristic_func}{The valued function defined on the subsets of the number
-of players. It can be provided as a vector or as a function.}
+\item{characteristic_func}{The characteristic function of the game. It can be
+a numeric vector with the value of every coalition, in the order given by
+\code{\link{coalitions}}: of length \eqn{2^n - 1}, without the empty
+coalition (whose value is taken as 0), or of length \eqn{2^n}, with the
+empty coalition first. Vectors support up to 30 players. It can also be a
+function that receives a coalition (a vector of players) and returns its
+value; in that case there is no limit on the number of players.}
 
 \item{details}{If \code{FALSE}, only \code{TRUE} or \code{FALSE} is returned
 and the check stops at the first violated constraint. If \code{TRUE}, every
