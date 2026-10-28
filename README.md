@@ -42,6 +42,5 @@ Run the scripts from the repository root, for example:
 Rscript benchmarks/run_benchmarks.R
 ```
 
-Results are written to `results/`, which is not tracked by git. Besides
-TUvalues, the experiments use ggplot2, readxl, writexl, callr, geometry,
+Besides TUvalues, the experiments use ggplot2, readxl, writexl, callr, geometry,
 microbenchmark, TUGLab, CoopGame and GameTheory.
