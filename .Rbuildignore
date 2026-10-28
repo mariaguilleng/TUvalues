@@ -3,3 +3,7 @@
 ^versionesrapidasNuevo\.R$
 ^checkcore\.R$
 ^LICENSE\.md$
+^benchmarks$
+^examples$
+^package_comparison$
+^results$

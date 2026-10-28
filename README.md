@@ -17,3 +17,31 @@ And the development version from
 ``` r
 devtools::install_github("mariaguilleng/TUvalues")
 ```
+
+## Reproducing the results of the paper
+
+The repository also contains the code of the experiments in the paper:
+
+> Camacho, J., Gonçalves-Dosantos, J. C., & Guillen, M. D. TUvalues: Exact
+> and Approximate Allocation Rules for Transferable-Utility Games in R.
+> *SoftwareX* (under review).
+
+These folders are not part of the CRAN package:
+
+- `examples/`: the usage examples of Section 3.3, with exact
+  (`exact_example.R`) and approximate (`approximate_example.R`) calculations.
+- `benchmarks/`: scalability and approximation-accuracy experiments
+  (Section 3.2). `run_benchmarks.R` runs all the games and builds the figures
+  and tables.
+- `package_comparison/`: comparison with TUGLab, CoopGame and GameTheory
+  (Section 3.1).
+
+Run the scripts from the repository root, for example:
+
+``` sh
+Rscript benchmarks/run_benchmarks.R
+```
+
+Results are written to `results/`, which is not tracked by git. Besides
+TUvalues, the experiments use ggplot2, readxl, writexl, callr, geometry,
+microbenchmark, TUGLab, CoopGame and GameTheory.
