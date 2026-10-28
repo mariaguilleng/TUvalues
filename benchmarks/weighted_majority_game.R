@@ -55,7 +55,7 @@ results <- run_benchmark(
   game             = function(n) weighted_majority_game(weights[1:n]),
   n_players        = n_players,
   n_rep_grid       = c(100, 500, 1000, 5000),
-  n_runs           = 20,
+  n_runs           = 50,
   rules            = allocation_rules(),
   unions           = unions,
   graph            = graph,

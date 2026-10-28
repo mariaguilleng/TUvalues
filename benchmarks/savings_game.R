@@ -81,7 +81,7 @@ if ("rules" %in% parts) {
     game             = game,
     n_players        = n_players,
     n_rep_grid       = c(100, 500, 1000, 5000),
-    n_runs           = 20,
+    n_runs           = 50,
     rules            = allocation_rules(),
     unions           = unions,
     graph            = graph,
@@ -98,7 +98,7 @@ if ("core" %in% parts) {
     game             = game,
     n_players        = c(6, 8, 10, 12),
     n_rep_grid       = c(100, 250, 500),
-    n_runs           = 20,
+    n_runs           = 50,
     exact_time_limit = 600  # seconds
   )
   save_benchmark(core_results, out_dir, prefix = paste0(game_name, "_core_"))

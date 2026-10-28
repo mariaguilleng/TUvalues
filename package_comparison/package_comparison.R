@@ -4,7 +4,7 @@
 # benchmarks): Shapley, Banzhaf, Owen, Myerson and core vertices.
 #
 # Every function is first checked against a reference solution and run once as
-# warm-up; then its execution time is measured over 20 runs. References:
+# warm-up; then its execution time is measured over 50 runs. References:
 #   - Shapley, Banzhaf and Owen: closed formulas (the game is a sum of
 #     unanimity games, one per visitor).
 #   - Myerson: its definition, evaluated over all coalitions in base R.
@@ -23,7 +23,7 @@ library(GameTheory)
 library(microbenchmark)
 source("benchmarks/benchmark_functions.R")  # half_quarter_unions(), random_graph()
 
-n_runs <- 20
+n_runs <- 50
 n      <- 10
 seed   <- 2026
 

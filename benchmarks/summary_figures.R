@@ -130,7 +130,7 @@ save_plot(figure_1, "figure_1_scalability", width = 8, height = 6.2)
 ## ---- Figure 2: accuracy and convergence -------------------------------------
 
 # Relative RMSE with respect to the exact value against K, with n = n_main
-# (mean of the 20 runs)
+# (mean of the 50 runs)
 convergence <- approx[approx$n == n_main & !is.na(approx$rel_rmse_exact_mean), ]
 figure_2 <- ggplot(convergence,
                    aes(n_rep, rel_rmse_exact_mean, colour = game)) +
@@ -211,7 +211,7 @@ print(error_agreement, digits = 3, row.names = FALSE)
 ## ---- Figure 4: core approximation ---------------------------------------------
 
 # Extreme-point ratio (EPR) and volume ratio (VR) against K: one row per n,
-# one column per measure and one line per game (mean of the 20 runs). A line
+# one column per measure and one line per game (mean of the 50 runs). A line
 # is only drawn when the exact core (or its volume) is available.
 measure_names <- c("A. Extreme-point ratio (EPR)", "B. Volume ratio (VR)")
 core_approx <- core[core$n_rep != "exact", ]
