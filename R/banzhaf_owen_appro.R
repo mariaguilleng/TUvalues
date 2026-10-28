@@ -1,23 +1,30 @@
-#' @title Banzhaf-Owen Value
+#' @title Banzhaf-Owen value (approximation)
 #' @noRd
 #'
-#' @description Calculate the approximated Banzhaf-Owen value using the
-#' algorithm proposed by Saavedra-Nieves & Fiestras-Janeiro (2021).
+#' @description Calculate the approximated Banzhaf-Owen value based on
+#' sampling, using the algorithm proposed by Saavedra-Nieves & Fiestras-Janeiro
+#' (2021): for each player, \code{n_rep} coalitions are sampled, formed by a
+#' uniform subset of the other unions and a uniform subset of the other members
+#' of the own union of the player.
+#' Internal function called by \code{banzhaf_owen}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param union List of vectors indicating the a priori unions between the
-#' players
-#' @param n_rep Only used if \code{method} is \code{appro}. The number of
-#' iterations to perform in the approximated calculation.
-#' @param n_players The number of players
-#' @param replace Should sampling be with replacement?
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param union The a priori unions, already checked: a list of integer
+#' vectors that form a partition of the players.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
+#' @param n_rep The number of iterations of the sampling, already checked.
+#' @param replace Should sampling be with replacement? Without replacement,
+#' \code{n_rep} is reduced, if necessary, to the number of different coalitions
+#' that can be sampled for each player.
 #' @param echo Show progress of the calculation.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom stats runif
 #'
-#' @return The Banzhaf-Owen Index for each player
+#' @return The Banzhaf-Owen value for each player.
 #'
 #' @references Saavedra-Nieves, A., & Fiestras-Janeiro, M. G. (2021). Sampling
 #' methods to estimate the Banzhaf–Owen value. Annals of Operations Research,

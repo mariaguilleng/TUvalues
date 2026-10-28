@@ -1,21 +1,25 @@
 #' @title Owen value (approximation)
 #' @noRd
 #'
-#' @description Calculate the approximated Owen value based on sampling using
-#' the algorithm proposed by Saavedra-Nieves et al. (2018).
+#' @description Calculate the approximated Owen value based on sampling, using
+#' the algorithm proposed by Saavedra-Nieves et al. (2018): \code{n_rep} random
+#' permutations of the players in which the members of each union appear
+#' consecutively, each giving one marginal contribution per player.
+#' Internal function called by \code{owen}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param union List of vectors indicating the a priori unions between the
-#' players
-#' @param n_players The number of players
-#' @param n_rep The number of iterations to perform in the approximated
-#' calculation
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param union The a priori unions, already checked: a list of integer
+#' vectors that form a partition of the players.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
+#' @param n_rep The number of iterations of the sampling, already checked.
 #' @param echo Show progress of the calculation.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
-#' @return The Owen value for each player
+#' @return The Owen value for each player.
 #'
 #' @references Saavedra-Nieves, A., García-Jurado, I., & Fiestras-Janeiro, M. G. (2018).
 #' Estimation of the Owen value based on sampling. In The mathematics of the uncertain:

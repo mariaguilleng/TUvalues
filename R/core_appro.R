@@ -1,17 +1,24 @@
 #' @title Approximated core of the game
 #' @noRd
 #'
-#' @description Calculate the vertices of the core of the game following
-#' Camacho et al. (2025)
+#' @description Calculate vertices of the core of the game following Camacho et
+#' al. (2025): in each of the \code{n_rep} iterations, a linear program over
+#' the core constraints is solved with a random objective direction (ROI and
+#' GLPK), and the distinct optimal vertices are kept. The value of the empty
+#' coalition is taken as 0.
+#' Internal function called by \code{coreVertex} and \code{centroid}, which
+#' check the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players.
-#' @param n_players Only used if \code{characteristic_func} is a \code{function}.
-#' The number of players in the game.
-#' @param n_rep The number of iterations to perform in the algorithm.
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
+#' @param n_rep The number of iterations of the sampling, already checked.
 #' @param echo Show progress of the calculation.
 #'
-#' @return The vertices of the estimated core
+#' @return A matrix with one vertex found per row and one column per player, or
+#' \code{NULL} (with a warning) if no vertex is found.
 #'
 #' @importFrom ROI OP L_objective L_constraint ROI_solve solution
 #' @import ROI.plugin.glpk

@@ -1,22 +1,27 @@
 #' @title Exact core of the game
 #' @noRd
 #'
-#' @description Calculate the vertices of core of the game. The vertices are
+#' @description Calculate the vertices of the core of the game. The vertices are
 #' enumerated with the double-description method of cddlib (package
 #' \code{rcdd}) in dimension \code{n_players - 1}, after reducing the problem
-#' with the individual lower bounds.
+#' with the individual lower bounds. The value of the empty coalition is taken
+#' as 0.
+#' Internal function called by \code{coreVertex} and \code{centroid}, which
+#' check the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players.
-#' @param n_players Only used if \code{characteristic_func} is a \code{function}.
-#' The number of players in the game.
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
 #' @param arithmetic Arithmetic used in the polyhedral computations:
 #' \code{"double"} (floating point) or \code{"rational"} (exact rational
 #' arithmetic; only the final vertices are converted to doubles).
 #' @param tol Positive tolerance used to compare values in floating point
 #' arithmetic and to clean values close to zero.
 #'
-#' @return The vertices of the core
+#' @return A matrix with one vertex of the core per row and one column per
+#' player, or \code{NULL} (with a warning) if the core is empty.
 #'
 #' @importFrom utils combn
 

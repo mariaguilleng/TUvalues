@@ -1,13 +1,20 @@
-#' @title Banzhaf Index (exact)
+#' @title Banzhaf value (exact)
 #' @noRd
 #'
-#' @description Calculate the approximated Banzhaf Index
+#' @description Calculate the exact Banzhaf value. For a vector, the value of
+#' every player is obtained with a binary reduction over all the coalitions; for
+#' a function, the coalitions are evaluated and accumulated by blocks
+#' (\code{exact_by_blocks}), so the memory used does not depend on the number
+#' of players.
+#' Internal function called by \code{banzhaf}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param n_players The number of players in the game.
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
 #'
-#' @return The Banzhaf Index for each player
+#' @return The Banzhaf value for each player.
 
 banzhaf_exact <- function(characteristic_func, n_players){
 

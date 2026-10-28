@@ -1,14 +1,18 @@
 #' @title Shapley value (approximation)
 #' @noRd
 #'
-#' @description Calculate the approximated Shapley value based on sampling using
-#' the algorithm proposed by Castro et al. (2009).
+#' @description Calculate the approximated Shapley value based on sampling,
+#' using the algorithm proposed by Castro et al. (2009): \code{n_rep} random
+#' permutations of the players, each giving one marginal contribution per
+#' player.
+#' Internal function called by \code{shapley}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param n_rep The number of iterations to perform in the approximated
-#' calculation
-#' @param n_players The number of players
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
+#' @param n_rep The number of iterations of the sampling, already checked.
 #' @param echo Show progress of the calculation.
 #'
 #' @references Castro, J., Gómez, D., & Tejada, J. (2009). Polynomial calculation
@@ -17,7 +21,7 @@
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
-#' @return The Shapley value for each player
+#' @return The Shapley value for each player.
 
 shapley_appro <- function(characteristic_func,n_players,n_rep, echo){
 

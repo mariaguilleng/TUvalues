@@ -1,20 +1,26 @@
-#' @title Banzhaf Index (approximated)
+#' @title Banzhaf value (approximation)
 #' @noRd
 #'
-#' @description Calculate the approximated Banzhaf Index based on sampling
+#' @description Calculate the approximated Banzhaf value based on sampling: for
+#' each player \eqn{i}, \code{n_rep} coalitions are sampled uniformly among
+#' the subsets of \eqn{N \setminus \{i\}}.
+#' Internal function called by \code{banzhaf}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param n_rep The number of iterations to perform in the approximated
-#' calculation
-#' @param n_players The number of players
-#' @param replace Should sampling be with replacement?
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
+#' @param n_rep The number of iterations of the sampling, already checked.
+#' @param replace Should sampling be with replacement? Without replacement,
+#' \code{n_rep} is reduced, if necessary, to the number of different coalitions
+#' that can be sampled for each player.
 #' @param echo Show progress of the calculation.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom stats runif
 #'
-#' @return The Shapley value for each player
+#' @return The Banzhaf value for each player.
 
 banzhaf_appro <- function(characteristic_func,n_players,n_rep,replace, echo){
 

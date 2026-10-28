@@ -1,13 +1,20 @@
 #' @title Shapley value (exact)
 #' @noRd
 #'
-#' @description Calculate the exact Shapley value
+#' @description Calculate the exact Shapley value. For a vector, the value of
+#' every player is obtained with a binary reduction over all the coalitions; for
+#' a function, the coalitions are evaluated and accumulated by blocks
+#' (\code{exact_by_blocks}), so the memory used does not depend on the number
+#' of players. The value of the empty coalition is taken as 0.
+#' Internal function called by \code{shapley}, which checks the arguments.
 #'
-#' @param characteristic_func The valued function defined on the subsets of the number
-#' of players
-#' @param n_players The number of players
+#' @param characteristic_func The characteristic function of the game, already
+#' checked: a numeric vector of length \eqn{2^n - 1} or \eqn{2^n} in the order
+#' given by \code{coalitions}, or a function that receives a coalition.
+#' @param n_players The number of players, already checked. Only used if
+#' \code{characteristic_func} is a function.
 #'
-#' @return The Shapley value for each player
+#' @return The Shapley value for each player.
 
 shapley_exact <- function(characteristic_func, n_players){
 
