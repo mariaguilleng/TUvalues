@@ -78,9 +78,6 @@ check_myerson_stability <- function(characteristic_func, graph_edges,
 
   n <- validate_game(characteristic_func, n_players)
   graph_edges <- validate_graph_edges(graph_edges, n)
-  if (any(vapply(graph_edges, function(edge) edge[1L] == edge[2L], logical(1)))) {
-    stop("Invalid edges provided. Each edge must join two different players.")
-  }
   validate_flag(details, "details")
   is_fun <- is.function(characteristic_func)
 

@@ -136,6 +136,10 @@ validate_graph_edges <- function(graph_edges, n_players) {
       stop("Invalid edges provided. Each edge must connect two players between 1 and ",
            n_players, ". Error in edge: ", paste(edge, collapse = ", "))
     }
+    if (edge[1L] == edge[2L]) {
+      stop("Invalid edges provided. Each edge must join two different players. ",
+           "Error in edge: ", paste(edge, collapse = ", "))
+    }
   }
   lapply(graph_edges, as.integer)
 }

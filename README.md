@@ -5,7 +5,7 @@ The main objective of cooperative Transferable-Utility games (TU-games) is to al
 ## Installation
 
 You can install the released version of the package from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://cran.r-project.org/web/packages/TUvalues/index.html) with:
 
 ``` r
 install.packages("TUvalues")
