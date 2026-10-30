@@ -57,11 +57,11 @@ allocation_rules <- function() {
       }),
     myerson_unions = list(
       exact = function(v, n, s) {
-        myerson_unions(v, n_players = n, unions = s$unions,
+        myerson_unions(v, n_players = n, union = s$unions,
                        graph_edges = s$graph, method = "exact")
       },
       approx = function(v, n, n_rep, s) {
-        myerson_unions(v, n_players = n, unions = s$unions,
+        myerson_unions(v, n_players = n, union = s$unions,
                        graph_edges = s$graph, method = "appro",
                        n_rep = n_rep, echo = FALSE)
       })

@@ -56,7 +56,7 @@
 #' @export
 
 coreVertex <- function(characteristic_func, n_players = 0, method = "exact",
-                       n_rep = 1000, echo = TRUE,
+                       n_rep = 500, echo = TRUE,
                        arithmetic = c("double", "rational"), tol = 1e-10) {
 
   validate_method(method)

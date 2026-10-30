@@ -8,8 +8,8 @@ banzhaf(
   characteristic_func,
   n_players = 0,
   method = "exact",
-  n_rep = 10000,
-  replace = FALSE,
+  n_rep = 1000,
+  replace = TRUE,
   echo = TRUE
 )
 }

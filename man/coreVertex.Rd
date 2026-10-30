@@ -8,7 +8,7 @@ coreVertex(
   characteristic_func,
   n_players = 0,
   method = "exact",
-  n_rep = 1000,
+  n_rep = 500,
   echo = TRUE,
   arithmetic = c("double", "rational"),
   tol = 1e-10

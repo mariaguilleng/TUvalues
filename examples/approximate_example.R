@@ -200,5 +200,5 @@ set.seed(123)
 myerson(v, graph_edges = graph_edges, n_players = n_players,
         method = "appro", n_rep = 1000, echo = T)
 set.seed(123)
-myerson_unions(v, graph_edges = graph_edges, unions = unions, n_players = n_players,
+myerson_unions(v, graph_edges = graph_edges, union = unions, n_players = n_players,
                method = "appro", n_rep = 1000, echo = T)

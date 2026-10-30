@@ -12,7 +12,7 @@
 #' value; in that case there is no limit on the number of players.
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
-#' @param unions List of vectors indicating the a priori unions between the
+#' @param union List of vectors indicating the a priori unions between the
 #' players.
 #' @param graph_edges Edges of the communication graph of the game: a
 #' \code{list} of pairs of players (for example \code{list(c(1, 2), c(2, 3))}),
@@ -46,17 +46,17 @@
 #' )
 #' graph_edges <- list(c(2,3),c(3,1),c(1,4))
 #' unions <- list(c(2,3),c(1),c(4))
-#' myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "exact")
-#' myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "appro", n_rep = 2000)
+#' myerson_unions(v, union = unions, graph_edges = graph_edges, method = "exact")
+#' myerson_unions(v, union = unions, graph_edges = graph_edges, method = "appro", n_rep = 2000)
 #'
 #' @export
 
-myerson_unions <- function(characteristic_func, n_players = 0, unions,
-                           graph_edges,  method = "exact", n_rep = 10000, echo = TRUE){
+myerson_unions <- function(characteristic_func, n_players = 0, union,
+                           graph_edges,  method = "exact", n_rep = 1000, echo = TRUE){
 
   validate_method(method)
   n_players <- validate_game(characteristic_func, n_players)
-  unions <- validate_union(unions, n_players, "unions")
+  union <- validate_union(union, n_players)
   graph_edges <- validate_graph_edges(graph_edges, n_players)
   if (method == "appro") {
     n_rep <- validate_n_rep(n_rep)
@@ -68,9 +68,9 @@ myerson_unions <- function(characteristic_func, n_players = 0, unions,
 
   # Owen value of the graph-restricted game
   if (method == "exact") {
-    owen_value <- owen_exact(game$characteristic_func, unions, game$n_players)
+    owen_value <- owen_exact(game$characteristic_func, union, game$n_players)
   } else {
-    owen_value <- owen_appro(game$characteristic_func, unions, game$n_players, n_rep, echo)
+    owen_value <- owen_appro(game$characteristic_func, union, game$n_players, n_rep, echo)
   }
 
   return(owen_value)

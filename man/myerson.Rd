@@ -9,7 +9,7 @@ myerson(
   graph_edges,
   n_players = 0,
   method = "exact",
-  n_rep = 10000,
+  n_rep = 1000,
   echo = TRUE
 )
 }

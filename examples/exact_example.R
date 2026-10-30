@@ -43,4 +43,4 @@ equal_surplus_division_unions(v, unions, type = 3)
 
 ## ----exactComm, echo=TRUE-----------------------------------------------------
 myerson(v, graph_edges = edges, method = "exact")
-myerson_unions(v, graph_edges = edges, unions = unions, method = "exact")
+myerson_unions(v, graph_edges = edges, union = unions, method = "exact")

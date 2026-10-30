@@ -29,7 +29,7 @@
 #' A Linear Programming Approach to Estimate the Core in Cooperative Games.
 #' arXiv preprint arXiv:2510.01766.
 
-core_appro <- function(characteristic_func, n_players = 0, n_rep = 1000, echo = TRUE){
+core_appro <- function(characteristic_func, n_players = 0, n_rep = 500, echo = TRUE){
 
   # Tolerance used to remove repeated vertices
   tol <- 1e-10

@@ -46,8 +46,8 @@
 #' @export
 
 
-banzhaf <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 10000,
-                    replace = FALSE, echo = TRUE){
+banzhaf <- function(characteristic_func, n_players = 0, method = "exact", n_rep = 1000,
+                    replace = TRUE, echo = TRUE){
 
   validate_method(method)
   n_players <- validate_game(characteristic_func, n_players)

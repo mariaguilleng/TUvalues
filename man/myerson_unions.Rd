@@ -7,10 +7,10 @@
 myerson_unions(
   characteristic_func,
   n_players = 0,
-  unions,
+  union,
   graph_edges,
   method = "exact",
-  n_rep = 10000,
+  n_rep = 1000,
   echo = TRUE
 )
 }
@@ -26,7 +26,7 @@ value; in that case there is no limit on the number of players.}
 \item{n_players}{Only used if \code{characteristic_func} is a \code{function}.
 The number of players in the game.}
 
-\item{unions}{List of vectors indicating the a priori unions between the
+\item{union}{List of vectors indicating the a priori unions between the
 players.}
 
 \item{graph_edges}{Edges of the communication graph of the game: a
@@ -60,8 +60,8 @@ v <- c(
 )
 graph_edges <- list(c(2,3),c(3,1),c(1,4))
 unions <- list(c(2,3),c(1),c(4))
-myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "exact")
-myerson_unions(v, unions = unions, graph_edges = graph_edges, method = "appro", n_rep = 2000)
+myerson_unions(v, union = unions, graph_edges = graph_edges, method = "exact")
+myerson_unions(v, union = unions, graph_edges = graph_edges, method = "appro", n_rep = 2000)
 
 }
 \references{
