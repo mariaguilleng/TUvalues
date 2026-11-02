@@ -32,8 +32,7 @@ Description: The main objective of cooperative Transferable-Utility games (TU-ga
   as an R function, so that coalition values are evaluated only when required.
   Additionally, it supports core set-based solutions, allowing computation of
   the vertices and the centroid of the core and checking whether an allocation
-  belongs to it, and it checks the pairwise stability of networks under the
-  Myerson value.
+  belongs to it.
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.3.3
