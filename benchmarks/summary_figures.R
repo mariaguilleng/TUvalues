@@ -147,6 +147,25 @@ figure_2 <- ggplot(convergence,
 save_plot(figure_2, "figure_2_accuracy", width = 8, height = 5)
 
 
+## ---- Figure 5: execution time against the number of samples -----------------
+
+# Execution time of the approximations against K, with n = n_main (mean of the
+# 50 runs), on a common scale for all the rules.
+time_by_k <- approx[approx$n == n_main, ]
+figure_5 <- ggplot(time_by_k, aes(n_rep, wall_time_mean, colour = game)) +
+  geom_line(linewidth = 0.6) +
+  geom_point(size = 1.6) +
+  facet_wrap(~ rule, ncol = 3) +
+  scale_x_continuous(breaks = c(100, 1000, 2000, 3000, 4000, 5000)) +
+  scale_y_continuous(limits = c(0, NA)) +
+  scale_colour_manual(values = game_colours) +
+  labs(x = "Number of samples (K)", y = "Execution time (s)",
+       colour = "Game") +
+  theme_summary +
+  theme(panel.spacing.x = unit(1.5, "lines"))
+save_plot(figure_5, "figure_5_time_by_k", width = 8, height = 5)
+
+
 ## ---- Figure 3: real against estimated error ----------------------------------
 
 # For every game, rule, n and K with exact allocation phi, from the R runs:

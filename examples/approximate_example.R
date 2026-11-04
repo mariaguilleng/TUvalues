@@ -9,105 +9,40 @@
 library(TUvalues)
 
 
-## ----getConnectedComp---------------------------------------------------------
-# Build Adjacency Matrix (G) from edges
-get_adj_matrix <- function(n_players, graph_edges) {
-
-  G_adj <-  matrix(0, nrow = n_players, ncol = n_players)
-  if (length(graph_edges) > 0) {
-    for (edge in graph_edges) {
-      if (length(edge) != 2) {
-        stop("Invalid edges provided. Each edge must connect two players.
-               Error in edge: ", paste(edge, collapse = ", "))
-      }
-      p1 <- edge[1]
-      p2 <- edge[2]
-      G_adj[p1, p2] <- 1
-      G_adj[p2, p1] <- 1
+## ----components, echo=TRUE--------------------------------------------------
+# Connected components of the subgraph induced by coalition
+components <- function(coalition) {
+  pending <- coalition
+  result <- list()
+  while (length(pending) > 0) {
+    component <- pending[1]
+    frontier <- pending[1]
+    while (length(frontier) > 0) {
+      frontier <- setdiff(intersect(unlist(neighbours[frontier]), coalition),
+                          component)
+      component <- c(component, frontier)
     }
-    return(G_adj)
+    result <- c(result, list(component))
+    pending <- setdiff(pending, component)
   }
-}
-
-# Helper Function to Find Connected Components (Depth-first search)
-get_connected_components <- function(players_in_S, adj_matrix, n_players) {
-  if (length(players_in_S) == 0) return(list())
-
-  # Start with all players in S unvisited (TRUE for players OUTSIDE S)
-  visited <- rep(FALSE, n_players)
-  visited[setdiff(1:n_players, players_in_S)] <- TRUE
-
-  components <- list()
-
-  for (start_node in players_in_S) {
-    if (!visited[start_node]) {
-      component <- integer(0)
-      stack <- start_node
-      visited[start_node] <- TRUE
-
-      while (length(stack) > 0) {
-        current <- stack[1]
-        stack <- stack[-1] # Pop
-        component <- c(component, current)
-
-        # Find neighbors of current node (within G_adj)
-        neighbors <- which(adj_matrix[current, ] == 1)
-
-        for (neighbor in neighbors) {
-          # Check if neighbor is in S AND not yet visited
-          if (neighbor %in% players_in_S && !visited[neighbor]) {
-            visited[neighbor] <- TRUE
-            stack <- c(neighbor, stack) # Push to stack (DFS)
-          }
-        }
-      }
-      components <- c(components, list(sort(component)))
-    }
-  }
-  return(components)
+  result
 }
 
 
-## ----aux, echo=TRUE-----------------------------------------------------------
-# Auxiliar function
-aux <- function(coalition) {
-  if (length(coalition) == 0) {
-    return(0)
-  }
-  # |S|=1
-  if (length(coalition) == 1) {
-    return(players_weights[coalition])
-  }
-  # |S| > 1
-  sum_weights_players <- sum(players_weights[coalition])
-  edges_coalition_index <- c()
-  for (i in seq(length(graph_edges))) {
-    if (all(unlist(graph_edges[i]) %in% coalition)) {
-      edges_coalition_index <- c(edges_coalition_index, i)
-    }
-  }
-  max_weigth_edge <- max(graph_weights[edges_coalition_index])
-  return(sum_weights_players * max_weigth_edge)
+## ----f, echo=TRUE-----------------------------------------------------------
+# Worth f(T) of a connected coalition T
+f <- function(T) {
+  if (length(T) == 1) return(players_weights[T])
+  inside <- edges[, 1] %in% T & edges[, 2] %in% T
+  sum(players_weights[T]) * max(graph_weights[inside])
 }
 
 
 ## ----vAppro, echo=TRUE--------------------------------------------------------
-# Characteristic function
+# Characteristic function: worth of the best connected component
 v <- function(coalition) {
-  if (length(coalition) == 0) {
-    return(0)
-  }
-  conn_comp<- get_connected_components(coalition, G_adj, n_players)
-  # S is connected
-  if (length(conn_comp) == 1) {
-    return (aux(conn_comp[[1]]))
-  }
-  # S in disconnected
-  v_comp <- c()
-  for (comp in conn_comp) {
-    v_comp <- c(v_comp,v(comp))
-  }
-  return(max(v_comp))
+  if (length(coalition) == 0) return(0)
+  max(vapply(components(coalition), f, numeric(1)))
 }
 
 
@@ -170,7 +105,11 @@ unions <- list(
 
 
 ## ----auxAppro, echo=FALSE-----------------------------------------------------
-G_adj <- get_adj_matrix(n_players, graph_edges)
+# Edges as a two-column matrix and neighbours of each player
+edges <- do.call(rbind, graph_edges)
+neighbours <- lapply(seq_len(n_players), function(i) {
+  c(edges[edges[, 1] == i, 2], edges[edges[, 2] == i, 1])
+})
 
 
 ## ----approSimple, echo=TRUE---------------------------------------------------
