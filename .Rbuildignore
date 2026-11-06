@@ -7,3 +7,4 @@
 ^examples$
 ^package_comparison$
 ^results$
+^R/check_myerson_stability\.R$

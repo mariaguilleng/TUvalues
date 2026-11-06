@@ -61,7 +61,7 @@ core_appro <- function(characteristic_func, n_players = 0, n_rep = 500, echo = T
       dir = directions,
       rhs = values
     ),
-    bounds = ROI::V_bound(li = seq_len(n), lb = rep(0, n)),
+    bounds = ROI::V_bound(li = seq_len(n), lb = rep(-Inf, n)),
     maximum = FALSE # Minimizing to find a boundary point (vertex)
   )
 

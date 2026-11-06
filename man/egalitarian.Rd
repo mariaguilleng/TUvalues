@@ -2,7 +2,7 @@
 % Please edit documentation in R/egalitarian.R
 \name{egalitarian}
 \alias{egalitarian}
-\title{Egalitarian value}
+\title{Egalitarian rule}
 \usage{
 egalitarian(characteristic_func, n_players = 0)
 }
@@ -19,10 +19,10 @@ value; in that case there is no limit on the number of players.}
 The number of players in the game.}
 }
 \value{
-The egalitarian value for each player
+The egalitarian rule for each player
 }
 \description{
-Calculate the egalitarian value
+Calculate the egalitarian rule
 }
 \examples{
 n <- 10

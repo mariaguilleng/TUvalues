@@ -1,7 +1,7 @@
-#' @title Egalitarian value
+#' @title Egalitarian rule
 #'
 #' @description
-#' Calculate the egalitarian value
+#' Calculate the egalitarian rule
 #'
 #' @param characteristic_func The characteristic function of the game. It can be
 #' a numeric vector with the value of every coalition, in the order given by
@@ -13,7 +13,7 @@
 #' @param n_players Only used if \code{characteristic_func} is a \code{function}.
 #' The number of players in the game.
 #'
-#' @return The egalitarian value for each player
+#' @return The egalitarian rule for each player
 #'
 #' @examples
 #' n <- 10

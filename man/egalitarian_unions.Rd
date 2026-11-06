@@ -2,7 +2,7 @@
 % Please edit documentation in R/egalitarian_unions.R
 \name{egalitarian_unions}
 \alias{egalitarian_unions}
-\title{Egalitarian value with a priori unions}
+\title{Egalitarian rule with a priori unions}
 \usage{
 egalitarian_unions(characteristic_func, union, n_players = 0)
 }
@@ -22,10 +22,10 @@ players.}
 The number of players in the game.}
 }
 \value{
-The egalitarian value for each player
+The egalitarian rule for each player
 }
 \description{
-Calculate the egalitarian value in games with a priori unions
+Calculate the egalitarian rule in games with a priori unions
 }
 \examples{
 n <- 10
